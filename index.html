@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elmahrosa International — Sovereign AI Infrastructure · Built in Alexandria</title>
+  <meta name="description" content="Elmahrosa International builds enterprise-grade AI security and intelligence systems on the TEOS stack. Founded Alexandria 2007. Member of the Claude Partner Network." />
+  <meta property="og:description" content="Sovereign AI infrastructure built in Alexandria — deployed globally. TEOS stack: security, compliance, healthcare, intelligence." />
+  <meta property="og:title" content="Elmahrosa International — Sovereign AI Infrastructure" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://elmahrosa.org" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0d12; --surface: #0f1318; --surface-2: #141920;
+      --border: rgba(255,255,255,0.07); --border-accent: rgba(96,175,147,0.3);
+      --teal: #60af93; --teal-dim: rgba(96,175,147,0.15);
+      --gold: #D4A841; --gold-dim: rgba(212,168,65,0.12); --gold-border: rgba(212,168,65,0.3);
+      --text: #e8e6e1; --text-dim: rgba(232,230,225,0.55); --text-muted: rgba(232,230,225,0.3);
+      --mono: 'DM Mono', monospace; --serif: 'Cormorant Garamond', Georgia, serif;
+      --arabic: 'Noto Naskh Arabic', serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--serif); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+    body.ar { font-family: var(--arabic); direction: rtl; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.5; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+    .topbar { border-bottom: 1px solid var(--border); background: rgba(10,13,18,0.95); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 40px; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.07em; color: var(--text-dim); }
+    .badge { display: flex; align-items: center; gap: 0.5rem; }
+    .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 6px var(--teal); animation: pulse 2.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .lang-toggle { display: flex; gap: 0.75rem; }
+    .lang-btn { background: none; border: none; cursor: pointer; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.07em; color: var(--text-dim); padding: 0.15rem 0.45rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
+    .lang-btn:hover, .lang-btn.active { color: var(--teal); background: var(--teal-dim); }
+    nav { border-bottom: 1px solid var(--border); background: rgba(10,13,18,0.88); backdrop-filter: blur(16px); position: sticky; top: 40px; z-index: 99; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+    .nav-logo { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; color: var(--text); }
+    .logo-mark svg { display: block; }
+    .nav-logo-text { display: flex; flex-direction: column; gap: 0; }
+    .nav-logo-name { font-family: var(--serif); font-size: 1.05rem; font-weight: 500; line-height: 1.1; letter-spacing: 0.01em; }
+    .nav-logo-name em { font-style: italic; color: var(--gold); font-weight: 300; }
+    .nav-logo-sub { font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { color: var(--teal) !important; border: 1px solid var(--border-accent) !important; padding: 0.35rem 0.85rem; border-radius: 3px; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--teal-dim) !important; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 6rem 0 4rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -20%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(ellipse, rgba(96,175,147,0.055) 0%, transparent 65%); pointer-events: none; }
+    .hero::after { content: ''; position: absolute; bottom: 10%; left: -15%; width: 40vw; height: 40vw; background: radial-gradient(ellipse, rgba(212,168,65,0.04) 0%, transparent 65%); pointer-events: none; }
+    .hero-eyebrow { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+    .hero-eyebrow::before { content:''; display:block; width:2rem; height:1px; background:var(--teal); }
+    .hero-est { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 2rem; border-left: 2px solid var(--gold); padding-left: 1rem; line-height: 1.7; opacity: 0.85; }
+    h1 { font-family: var(--serif); font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.01em; max-width: 820px; margin-bottom: 2rem; }
+    h1 em { font-style: italic; color: var(--teal); }
+    .hero-sub { font-size: 1.05rem; color: var(--text-dim); max-width: 580px; line-height: 1.8; margin-bottom: 3rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { font-family: var(--mono); font-size: 0.73rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--bg); background: var(--teal); padding: 0.75rem 1.5rem; border-radius: 3px; transition: opacity 0.2s, transform 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-ghost { font-family: var(--mono); font-size: 0.73rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--text-dim); border: 1px solid var(--border); padding: 0.75rem 1.5rem; border-radius: 3px; transition: border-color 0.2s, color 0.2s, transform 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn-ghost:hover { border-color: var(--gold-border); color: var(--gold); transform: translateY(-1px); }
+    .hero-ticker { margin-top: 5rem; font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); overflow: hidden; white-space: nowrap; }
+    .hero-ticker span { display: inline-block; animation: ticker 22s linear infinite; }
+    .tdot { color: var(--gold); margin: 0 1.5rem; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    section { padding: 7rem 0; position: relative; z-index: 1; }
+    .section-label { font-family: var(--mono); font-size: 0.61rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+    .section-label::before { content:''; display:block; width:1.5rem; height:1px; background:var(--teal); }
+    h2 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.2; max-width: 680px; margin-bottom: 4rem; }
+    h2 em { font-style: italic; color: var(--teal); }
+    .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+    .product-card { background: var(--surface); padding: 2.5rem; transition: background 0.3s; position: relative; overflow: hidden; }
+    .product-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transition: transform 0.4s; }
+    .product-card:hover::before { transform: scaleX(1); }
+    .product-card:hover { background: var(--surface-2); }
+    .product-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+    .product-num { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.14em; color:var(--text-muted); }
+    .product-status { font-family:var(--mono); font-size:0.57rem; letter-spacing:0.12em; text-transform:uppercase; padding:0.18rem 0.5rem; border-radius:2px; }
+    .status-live { color:var(--teal); background:var(--teal-dim); border:1px solid var(--border-accent); }
+    .status-pilot { color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); }
+    .product-category { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.13em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.75rem; }
+    .product-card h3 { font-family:var(--serif); font-size:1.55rem; font-weight:400; margin-bottom:1rem; line-height:1.15; }
+    .product-card h3 em { font-style:italic; color:var(--gold); }
+    .product-card p { font-size:0.93rem; color:var(--text-dim); line-height:1.72; margin-bottom:1.5rem; }
+    .product-link { font-family:var(--mono); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--teal); display:inline-flex; align-items:center; gap:0.4rem; transition:gap 0.2s; }
+    .product-link:hover { gap:0.7rem; }
+    .principles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+    .principle { padding:2rem 0; border-top:1px solid var(--border); }
+    .principle-index { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.15em; color:var(--text-muted); margin-bottom:1.5rem; }
+    .principle h4 { font-family:var(--serif); font-size:1.18rem; font-weight:400; margin-bottom:0.75rem; }
+    .principle p { font-size:0.88rem; color:var(--text-dim); line-height:1.72; }
+    .partner-block { border:1px solid var(--border); background:var(--surface); padding:3.5rem; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+    .partner-stats { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem; }
+    .stat-item { border-top:1px solid var(--border); padding-top:1rem; }
+    .stat-number { font-family:var(--serif); font-size:2.4rem; font-weight:300; line-height:1; margin-bottom:0.4rem; }
+    .stat-number sup { font-size:1rem; color:var(--teal); }
+    .stat-label { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); line-height:1.4; }
+    .about-grid { display:grid; grid-template-columns:1fr 330px; gap:5rem; align-items:start; }
+    .about-text p { font-size:1.03rem; color:var(--text-dim); line-height:1.85; margin-bottom:1.5rem; }
+    .about-text p strong { color:var(--text); font-weight:500; }
+    .company-facts { border-top:1px solid var(--border); }
+    .fact-row { display:flex; justify-content:space-between; align-items:baseline; padding:1rem 0; border-bottom:1px solid var(--border); gap:1rem; }
+    .fact-key { font-family:var(--mono); font-size:0.61rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); }
+    .fact-value { font-family:var(--serif); font-size:0.98rem; color:var(--text); text-align:right; }
+    .fact-value em { font-style:normal; color:var(--gold); }
+    .repos-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:3rem; }
+    .repo-card { background:var(--surface); border:1px solid var(--border); padding:1.4rem; border-radius:4px; transition:border-color 0.2s, background 0.2s; text-decoration:none; display:block; }
+    .repo-card:hover { border-color:var(--gold-border); background:var(--surface-2); }
+    .repo-name { font-family:var(--mono); font-size:0.76rem; color:var(--gold); margin-bottom:0.55rem; }
+    .repo-badge { display:inline-block; font-family:var(--mono); font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.1rem 0.4rem; border-radius:2px; margin-left:0.4rem; vertical-align:middle; }
+    .badge-public { color:var(--teal); background:var(--teal-dim); border:1px solid var(--border-accent); }
+    .badge-private { color:var(--text-muted); background:rgba(255,255,255,0.04); border:1px solid var(--border); }
+    .repo-desc { font-size:0.8rem; color:var(--text-dim); line-height:1.52; margin-bottom:0.8rem; }
+    .repo-lang { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.09em; color:var(--text-muted); text-transform:uppercase; display:flex; align-items:center; gap:0.35rem; }
+    .ldot { display:inline-block; width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .l-ts { background:#3178c6; } .l-js { background:#f1e05a; } .l-py { background:#3572A5; } .l-html { background:#e34c26; } .l-ps { background:#012456; }
+    .contact-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5px; background:var(--border); border:1px solid var(--border); }
+    .contact-item { background:var(--surface); padding:2rem; transition:background 0.2s; }
+    .contact-item:hover { background:var(--surface-2); }
+    .contact-label { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.75rem; }
+    .contact-link { font-family:var(--serif); font-size:0.93rem; color:var(--teal); text-decoration:none; transition:opacity 0.2s; word-break:break-all; }
+    .contact-link:hover { opacity:0.75; }
+    footer { border-top:1px solid var(--border); padding:4rem 0 2rem; position:relative; z-index:1; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+    .footer-brand-row { display:flex; align-items:center; gap:0.9rem; margin-bottom:0.75rem; }
+    .footer-brand p { font-size:0.85rem; color:var(--text-muted); line-height:1.7; max-width:260px; }
+    .footer-col h5 { font-family:var(--mono); font-size:0.59rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-muted); margin-bottom:1rem; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:0.5rem; }
+    .footer-col ul li a { font-size:0.85rem; color:var(--text-dim); text-decoration:none; transition:color 0.2s; }
+    .footer-col ul li a:hover { color:var(--gold); }
+    .footer-col address { font-style:normal; font-size:0.8rem; color:var(--text-dim); line-height:1.85; }
+    .footer-bottom { display:flex; align-items:center; justify-content:space-between; padding-top:2rem; border-top:1px solid var(--border); font-family:var(--mono); font-size:0.6rem; letter-spacing:0.06em; color:var(--text-muted); }
+    body.ar .hero-eyebrow::before, body.ar .section-label::before { display:none; }
+    body.ar .hero-eyebrow::after, body.ar .section-label::after { content:''; display:block; width:1.5rem; height:1px; background:var(--teal); }
+    body.ar .hero-est { border-left:none; border-right:2px solid var(--gold); padding-left:0; padding-right:1rem; }
+    body.ar .fact-value { text-align:left; }
+    @media(max-width:900px) { .products-grid,.principles-grid,.contact-grid { grid-template-columns:1fr; } .partner-block { grid-template-columns:1fr; gap:2rem; } .about-grid { grid-template-columns:1fr; gap:2rem; } .footer-grid { grid-template-columns:1fr 1fr; gap:2rem; } .repos-grid { grid-template-columns:1fr 1fr; } .nav-links { display:none; } }
+    @media(max-width:540px) { .repos-grid { grid-template-columns:1fr; } .footer-grid { grid-template-columns:1fr; } h1 { font-size:2.4rem; } .contact-grid { grid-template-columns:1fr 1fr; } }
+    .fade-in { opacity:0; transform:translateY(16px); transition:opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
+  </style>
+</head>
+<body class="en">
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      <span data-en="Member · Claude Partner Network · Alexandria, Egypt" data-ar="عضو · شبكة شركاء كلود · الإسكندرية، مصر">Member · Claude Partner Network · Alexandria, Egypt</span>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btn-ar" onclick="setLang('ar')">عربي</button>
+    </div>
+  </div>
+</div>
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">
+        <svg width="36" height="36" viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="0" cy="0" r="48" fill="none" stroke="#D4A841" stroke-width="1.5"/>
+          <line x1="-22" y1="22" x2="-22" y2="-18" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/>
+          <line x1="22" y1="22" x2="22" y2="-18" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/>
+          <line x1="-22" y1="-18" x2="0" y2="6" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/>
+          <line x1="22" y1="-18" x2="0" y2="6" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/>
+          <circle cx="0" cy="-26" r="3.5" fill="#D4A841"/>
+          <line x1="-28" y1="28" x2="28" y2="28" stroke="#D4A841" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-name">Elmahrosa <em>International</em></span>
+        <span class="nav-logo-sub" data-en="Sovereign · AI · Infrastructure" data-ar="بنية تحتية · ذكاء اصطناعي · سيادي">Sovereign · AI · Infrastructure</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#products" data-en="Products" data-ar="المنتجات">Products</a></li>
+      <li><a href="#approach" data-en="Approach" data-ar="المنهجية">Approach</a></li>
+      <li><a href="#partner" data-en="Partners" data-ar="الشركاء">Partners</a></li>
+      <li><a href="#about" data-en="About" data-ar="عن الشركة">About</a></li>
+      <li><a href="/trust" data-en="Trust Center" data-ar="مركز الثقة">Trust Center</a></li>
+      <li><a href="#contact" class="nav-cta" data-en="Get in touch →" data-ar="تواصل معنا ←">Get in touch →</a></li>
+    </ul>
+  </div>
+</nav>
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow" data-en="Sovereign AI Infrastructure · Built in Alexandria for the World" data-ar="بنية تحتية سيادية للذكاء الاصطناعي · مبنية في الإسكندرية للعالم">Sovereign AI Infrastructure · Built in Alexandria for the World</div>
+    <div class="hero-est"><span data-en="Founded 2007 · Dev division active 2020 · 71 repositories · Deployed globally" data-ar="تأسست ٢٠٠٧ · قسم التطوير نشط منذ ٢٠٢٠ · ٧١ مستودعاً · منتشرة عالمياً">Founded 2007 · Dev division active 2020 · 71 repositories · Deployed globally</span></div>
+    <h1 class="fade-in"><span data-en="Frontier AI, built in Alexandria. <em>Deployed everywhere.</em>" data-ar="ذكاء اصطناعي حدودي، مبني في الإسكندرية. <em>منتشر في كل مكان.</em>">Frontier AI, built in Alexandria. <em>Deployed everywhere.</em></span></h1>
+    <p class="hero-sub fade-in" data-en="Elmahrosa International builds enterprise-grade AI security, intelligence, and compliance systems on the TEOS stack. Originated in Alexandria. Deployed globally — from Cairo to Riyadh, Jakarta to London, and every institution that demands sovereign AI." data-ar="تبني إلمهروسة الدولية أنظمة أمان ومعرفة وامتثال للذكاء الاصطناعي على مستوى المؤسسات. أصلها في الإسكندرية. منتشرة عالمياً.">Elmahrosa International builds enterprise-grade AI security, intelligence, and compliance systems on the TEOS stack. Originated in Alexandria. Deployed globally — from Cairo to Riyadh, Jakarta to London, and every institution that demands sovereign AI.</p>
+    <div class="hero-actions fade-in">
+      <a href="#products" class="btn-primary" data-en="Explore the stack →" data-ar="استكشف الحزمة ←">Explore the stack →</a>
+      <a href="#partner" class="btn-ghost" data-en="Partner with us →" data-ar="شاركنا ←">Partner with us →</a>
+    </div>
+    <div class="hero-ticker"><span><span class="tdot">◆</span><span data-en="Built in Alexandria" data-ar="مبني في الإسكندرية">Built in Alexandria</span><span class="tdot">◆</span><span data-en="Founded 2007 · Dev 2020" data-ar="تأسس ٢٠٠٧ · التطوير ٢٠٢٠">Founded 2007 · Dev 2020</span><span class="tdot">◆</span><span data-en="Claude Partner Network" data-ar="شبكة شركاء كلود">Claude Partner Network</span><span class="tdot">◆</span><span data-en="Deployed on Every Continent" data-ar="منتشر في كل قارة">Deployed on Every Continent</span><span class="tdot">◆</span><span data-en="71 Repositories · 4 Live Products" data-ar="٧١ مستودعاً · ٤ منتجات مباشرة">71 Repositories · 4 Live Products</span><span class="tdot">◆</span><span data-en="Built in Alexandria" data-ar="مبني في الإسكندرية">Built in Alexandria</span><span class="tdot">◆</span><span data-en="Founded 2007 · Dev 2020" data-ar="تأسس ٢٠٠٧ · التطوير ٢٠٢٠">Founded 2007 · Dev 2020</span><span class="tdot">◆</span><span data-en="Claude Partner Network" data-ar="شبكة شركاء كلود">Claude Partner Network</span><span class="tdot">◆</span><span data-en="Deployed on Every Continent" data-ar="منتشر في كل قارة">Deployed on Every Continent</span><span class="tdot">◆</span><span data-en="71 Repositories · 4 Live Products" data-ar="٧١ مستودعاً · ٤ منتجات مباشرة">71 Repositories · 4 Live Products</span></span></div>
+  </div>
+</section>
+<section id="products">
+  <div class="container">
+    <div class="section-label" data-en="The TEOS Stack" data-ar="حزمة TEOS">The TEOS Stack</div>
+    <h2 class="fade-in"><span data-en="Production systems for <em>institutional buyers.</em>" data-ar="أنظمة إنتاجية <em>للمشترين المؤسسيين.</em>">Production systems for <em>institutional buyers.</em></span></h2>
+    <div class="products-grid">
+      <div class="product-card fade-in">
+        <div class="product-meta"><span class="product-num">01 / Security</span><span class="product-status status-live" data-en="Live" data-ar="مباشر">Live</span></div>
+        <div class="product-category" data-en="Pre-execution AI defense" data-ar="دفاع الذكاء الاصطناعي قبل التنفيذ">Pre-execution AI defense</div>
+        <h3>TEOS <em>Sentinel Shield</em></h3>
+        <p data-en="A Telegram-native AI security gateway that scans code, dependencies, and CI/CD pipelines for risk before they run. Returns BLOCK/WARN/ALLOW verdicts with risk scores across three engines and 25 named MCP rules." data-ar="بوابة أمان ذكاء اصطناعي أصلية على تيليجرام تفحص الكود والتبعيات وخطوط CI/CD بحثاً عن المخاطر قبل تشغيلها.">A Telegram-native AI security gateway that scans code, dependencies, and CI/CD pipelines for risk before they run. Returns BLOCK/WARN/ALLOW verdicts with risk scores across three engines and 25 named MCP rules.</p>
+        <a href="https://teos-sentinel-shield.vercel.app" class="product-link" target="_blank" data-en="Visit Sentinel →" data-ar="زيارة Sentinel ←">Visit Sentinel →</a>
+      </div>
+      <div class="product-card fade-in">
+        <div class="product-meta"><span class="product-num">02 / Intelligence</span><span class="product-status status-live" data-en="Live" data-ar="مباشر">Live</span></div>
+        <div class="product-category" data-en="AI content generation platform" data-ar="منصة توليد المحتوى بالذكاء الاصطناعي">AI content generation platform</div>
+        <h3>TEOS <em>AI Engine</em></h3>
+        <p data-en="AI-powered SaaS platform generating high-impact content for X, Facebook, Instagram, and LinkedIn. Built for founders and agencies worldwide. Multilingual (Arabic / English / Indonesian), Claude-native." data-ar="منصة SaaS مدعومة بالذكاء الاصطناعي لتوليد محتوى عالي التأثير. مبنية للمؤسسين والوكالات حول العالم.">AI-powered SaaS platform generating high-impact content for X, Facebook, Instagram, and LinkedIn. Built for founders and agencies worldwide. Multilingual (Arabic / English / Indonesian), Claude-native.</p>
+        <a href="#contact" class="product-link" data-en="Request access →" data-ar="طلب الوصول ←">Request access →</a>
+      </div>
+      <div class="product-card fade-in">
+        <div class="product-meta"><span class="product-num">03 / Healthcare</span><span class="product-status status-pilot" data-en="Pilot" data-ar="تجريبي">Pilot</span></div>
+        <div class="product-category" data-en="Self-hosted clinical backend" data-ar="خلفية سريرية ذاتية الاستضافة">Self-hosted clinical backend</div>
+        <h3>UCH <em>Sovereign Core</em></h3>
+        <p data-en="Hospital Management System with telemedicine, blockchain audit, and institutional deployment support. Self-hosted, capability-tagged, built for government health ministries and private hospital groups globally." data-ar="نظام إدارة مستشفيات مع خدمة التطبيب عن بُعد ومراجعة البلوكشين. ذاتي الاستضافة، مبني لوزارات الصحة ومجموعات المستشفيات.">Hospital Management System with telemedicine, blockchain audit, and institutional deployment support. Self-hosted, capability-tagged, built for government health ministries and private hospital groups globally.</p>
+        <a href="#contact" class="product-link" data-en="Institutional inquiries →" data-ar="استفسارات مؤسسية ←">Institutional inquiries →</a>
+      </div>
+      <div class="product-card fade-in">
+        <div class="product-meta"><span class="product-num">04 / Compliance</span><span class="product-status status-live" data-en="Live" data-ar="مباشر">Live</span></div>
+        <div class="product-category" data-en="Regulated web ingestion" data-ar="استيعاب الويب المنظم">Regulated web ingestion</div>
+        <h3>TEOS <em>Comply-Crawl</em></h3>
+        <p data-en="A Python/FastAPI compliance scraping API with PII scrubbing, SSRF protection, robots.txt compliance, and credit billing. For legal, compliance, and research teams in any regulated jurisdiction worldwide." data-ar="واجهة برمجية Python/FastAPI للامتثال مع تنظيف PII وحماية SSRF وفوترة الائتمان.">A Python/FastAPI compliance scraping API with PII scrubbing, SSRF protection, robots.txt compliance, and credit billing. For legal, compliance, and research teams in any regulated jurisdiction worldwide.</p>
+        <a href="#contact" class="product-link" data-en="Read the docs →" data-ar="قراءة التوثيق ←">Read the docs →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="approach" style="background:linear-gradient(180deg,transparent,rgba(212,168,65,0.025),transparent);">
+  <div class="container">
+    <div class="section-label" data-en="Operating Principles" data-ar="مبادئ التشغيل">Operating Principles</div>
+    <h2 class="fade-in"><span data-en="Three commitments that shape <em>every line of code.</em>" data-ar="ثلاثة التزامات تشكّل <em>كل سطر كود.</em>">Three commitments that shape <em>every line of code.</em></span></h2>
+    <div class="principles-grid">
+      <div class="principle fade-in"><div class="principle-index">i.</div><h4 data-en="Sovereign by design" data-ar="سيادي بالتصميم">Sovereign by design</h4><p data-en="Customer data, code, and credentials stay within the customer's perimeter. We build self-hosted by default and pull only what is strictly required. Law over code, in that order." data-ar="تبقى بيانات العميل والكود داخل محيط العميل. نبني بالاستضافة الذاتية افتراضياً. القانون فوق الكود.">Customer data, code, and credentials stay within the customer's perimeter. We build self-hosted by default and pull only what is strictly required. Law over code, in that order.</p></div>
+      <div class="principle fade-in"><div class="principle-index">ii.</div><h4 data-en="Built for institutions" data-ar="مبني للمؤسسات">Built for institutions</h4><p data-en="Our buyers are ministries, hospitals, banks, and enterprises — anywhere on earth. We tag every capability claim as verified, probable, inferred, or speculative. Honest disclosure is commercially stronger with serious buyers." data-ar="مشترونا هم الوزارات والمستشفيات والبنوك والمؤسسات — في أي مكان على الأرض.">Our buyers are ministries, hospitals, banks, and enterprises — anywhere on earth. We tag every capability claim as <em style="font-style:italic;color:var(--text-dim)">verified, probable, inferred,</em> or <em style="font-style:italic;color:var(--text-dim)">speculative.</em> Honest disclosure is commercially stronger with serious buyers.</p></div>
+      <div class="principle fade-in"><div class="principle-index">iii.</div><h4 data-en="Alexandria origin. Global reach." data-ar="أصل إسكندراني. وصول عالمي.">Alexandria origin. Global reach.</h4><p data-en="Built in Alexandria. Written in English, Arabic, and Indonesian. Deployed for institutional buyers from Cairo to Riyadh, Nairobi to Jakarta, London to Singapore." data-ar="مبني في الإسكندرية. مكتوب بالإنجليزية والعربية والإندونيسية. منتشر من القاهرة إلى الرياض، ومن نيروبي إلى جاكرتا.">Built in Alexandria. Written in English, Arabic, and Indonesian. Deployed for institutional buyers from Cairo to Riyadh, Nairobi to Jakarta, London to Singapore.</p></div>
+    </div>
+  </div>
+</section>
+<section id="partner">
+  <div class="container">
+    <div class="section-label" data-en="Claude Partner Network" data-ar="شبكة شركاء كلود">Claude Partner Network</div>
+    <div class="partner-block fade-in">
+      <div>
+        <h2 style="margin-bottom:1.5rem;"><span data-en="Member of the <em>Claude Partner Network</em>." data-ar="عضو في <em>شبكة شركاء كلود</em>.">Member of the <em>Claude Partner Network</em>.</span></h2>
+        <p style="color:var(--text-dim);font-size:0.95rem;line-height:1.8;" data-en="Elmahrosa International is part of Anthropic's official Claude Partner Network — the program for organizations helping enterprises globally adopt Claude. We bring frontier AI to public-sector and enterprise buyers worldwide with the training, technical depth, and co-marketing support of Anthropic behind every engagement." data-ar="إلمهروسة الدولية جزء من شبكة شركاء كلود الرسمية من أنثروبيك. نجلب الذكاء الاصطناعي الحدودي للقطاع العام والمشترين المؤسسيين حول العالم.">Elmahrosa International is part of Anthropic's official Claude Partner Network — the program for organizations helping enterprises globally adopt Claude. We bring frontier AI to public-sector and enterprise buyers worldwide with the training, technical depth, and co-marketing support of Anthropic behind every engagement.</p>
+      </div>
+      <div class="partner-stats">
+        <div class="stat-item"><div class="stat-number">100M<sup>+</sup></div><div class="stat-label" data-en="USD committed by Anthropic to partner network 2026" data-ar="دولار ملتزمة لشبكة الشركاء ٢٠٢٦">USD committed by Anthropic to partner network 2026</div></div>
+        <div class="stat-item"><div class="stat-number">04</div><div class="stat-label" data-en="Claude certifications held by core team" data-ar="شهادات كلود يحملها الفريق الأساسي">Claude certifications held by core team</div></div>
+        <div class="stat-item"><div class="stat-number">71</div><div class="stat-label" data-en="Active repositories across the TEOS stack" data-ar="مستودعاً نشطاً عبر حزمة TEOS">Active repositories across the TEOS stack</div></div>
+        <div class="stat-item"><div class="stat-number">75<sup>+</sup></div><div class="stat-label" data-en="Nations reached across 6 continents" data-ar="دولة عبر ٦ قارات">Nations reached across 6 continents</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="about">
+  <div class="container">
+    <div class="section-label" data-en="The Company" data-ar="الشركة">The Company</div>
+    <h2 class="fade-in"><span data-en="Alexandria is the origin. <em>The world is the market.</em>" data-ar="الإسكندرية هي المنشأ. <em>العالم هو السوق.</em>">Alexandria is the origin. <em>The world is the market.</em></span></h2>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p data-en="Elmahrosa International was <strong>founded in 2007</strong> in Alexandria as an events and production company. In <strong>2020, the company pivoted to software and AI development</strong> — launching its first technical products and establishing the engineering foundation that became the TEOS stack." data-ar="تأسست إلمهروسة الدولية عام <strong>٢٠٠٧</strong> في الإسكندرية كشركة فعاليات وإنتاج. في عام <strong>٢٠٢٠</strong>، تحولت إلى تطوير البرمجيات والذكاء الاصطناعي.">Elmahrosa International was <strong>founded in 2007</strong> in Alexandria as an events and production company. In <strong>2020, the company pivoted to software and AI development</strong> — launching its first technical products and establishing the engineering foundation that became the TEOS stack.</p>
+        <p data-en="The thesis is simple: the next generation of sovereign AI infrastructure would not be built only in San Francisco or London — it would be built wherever the engineering is serious and the institutional need is real. Alexandria qualifies on both counts." data-ar="الفرضية بسيطة: الجيل القادم من بنية تحتية سيادية للذكاء الاصطناعي لن يُبنى فقط في سان فرانسيسكو أو لندن.">The thesis is simple: the next generation of sovereign AI infrastructure would not be built only in San Francisco or London — it would be built wherever the engineering is serious and the institutional need is real. Alexandria qualifies on both counts.</p>
+        <p data-en="We build for governments, hospitals, ministries, and banks across every continent. Today the TEOS stack spans <strong>71 repositories</strong>, <strong>4 live products</strong>, and institutional buyers across <strong>75+ nations</strong>." data-ar="نبني للحكومات والمستشفيات والوزارات والبنوك في كل قارة. اليوم تمتد حزمة TEOS عبر <strong>٧١ مستودعاً</strong> و<strong>٤ منتجات مباشرة</strong> ومشترين في <strong>٧٥+ دولة</strong>.">We build for governments, hospitals, ministries, and banks across every continent. Today the TEOS stack spans <strong>71 repositories</strong>, <strong>4 live products</strong>, and institutional buyers across <strong>75+ nations</strong>.</p>
+      </div>
+      <div>
+        <div class="company-facts">
+          <div class="fact-row"><span class="fact-key" data-en="Founded" data-ar="التأسيس">Founded</span><span class="fact-value"><em>2007</em></span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Dev division" data-ar="قسم التطوير">Dev division</span><span class="fact-value"><em>2020</em></span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Headquarters" data-ar="المقر الرئيسي">Headquarters</span><span class="fact-value">Alexandria, EG</span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Partner status" data-ar="حالة الشراكة">Partner status</span><span class="fact-value"><em>CPN Member</em></span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Repositories" data-ar="المستودعات">Repositories</span><span class="fact-value"><em>71</em></span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Live products" data-ar="منتجات مباشرة">Live products</span><span class="fact-value"><em>04</em></span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Languages" data-ar="اللغات">Languages</span><span class="fact-value">EN · AR · ID</span></div>
+          <div class="fact-row"><span class="fact-key" data-en="Reach" data-ar="النطاق">Reach</span><span class="fact-value">75+ nations</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:5rem;">
+      <div class="section-label" data-en="Engineering · github.com/Elmahrosa · 71 repositories" data-ar="الهندسة · github.com/Elmahrosa · ٧١ مستودعاً">Engineering · github.com/Elmahrosa · 71 repositories</div>
+      <div class="repos-grid">
+        <a href="https://github.com/Elmahrosa/Teos-AI-Engine" class="repo-card" target="_blank"><div class="repo-name">Teos-AI-Engine <span class="repo-badge badge-public">public</span></div><div class="repo-desc">AI-powered SaaS for high-impact social content on X, Facebook, Instagram, LinkedIn. Built for founders globally.</div><div class="repo-lang"><span class="ldot l-ts"></span>TypeScript · ⭐ 3</div></a>
+        <a href="https://github.com/Elmahrosa/UnityCare-Platform" class="repo-card" target="_blank"><div class="repo-name">UnityCare-Platform <span class="repo-badge badge-public">public</span></div><div class="repo-desc">Hospital Management + telemedicine + blockchain audit. Consolidated from 5 repos. Institutional deployment ready.</div><div class="repo-lang"><span class="ldot l-ts"></span>TypeScript · ⭐ 2</div></a>
+        <a href="https://github.com/Elmahrosa/teos-sentinel-stack" class="repo-card" target="_blank"><div class="repo-name">teos-sentinel-stack <span class="repo-badge badge-private">private</span></div><div class="repo-desc">Consolidated security monorepo: shield, risk-engine, civic-mixer, ingestion, and activation layers.</div><div class="repo-lang"><span class="ldot l-html"></span>HTML</div></a>
+        <a href="https://github.com/Elmahrosa/teos-sovereign-security-stack" class="repo-card" target="_blank"><div class="repo-name">teos-sovereign-security-stack <span class="repo-badge badge-public">public</span></div><div class="repo-desc">Root orchestration hub for the TEOS Sovereign Security Mesh — 9 modular layers.</div><div class="repo-lang"><span class="ldot l-ps"></span>PowerShell · ⭐ 1</div></a>
+        <a href="https://github.com/Elmahrosa/agent-code-risk-mcp" class="repo-card" target="_blank"><div class="repo-name">agent-code-risk-mcp <span class="repo-badge badge-public">public</span></div><div class="repo-desc">Deterministic MCP server: execution-time code risk gating for autonomous AI agents. ALLOW / WARN / BLOCK.</div><div class="repo-lang"><span class="ldot l-ts"></span>TypeScript · ⭐ 2</div></a>
+        <a href="https://github.com/Elmahrosa/safe-ingestion-engine" class="repo-card" target="_blank"><div class="repo-name">safe-ingestion-engine <span class="repo-badge badge-public">public</span></div><div class="repo-desc">Ethical web ingestion API: robots.txt compliance, PII scrubbing, SSRF protection, YAML policy rules.</div><div class="repo-lang"><span class="ldot l-py"></span>Python · ⭐ 1</div></a>
+        <a href="https://github.com/Elmahrosa/teoslinker-bot" class="repo-card" target="_blank"><div class="repo-name">teoslinker-bot <span class="repo-badge badge-public">public</span></div><div class="repo-desc">On-chain risk monitoring + execution guard for autonomous AI agents. MCP-native. Telegram alerts.</div><div class="repo-lang"><span class="ldot l-js"></span>JavaScript · ⭐ 1</div></a>
+        <a href="https://github.com/Elmahrosa/UCH-Buyer-Kit" class="repo-card" target="_blank"><div class="repo-name">UCH-Buyer-Kit <span class="repo-badge badge-public">public</span></div><div class="repo-desc">Institutional procurement and due diligence kit for the Unity Care Hospital sovereign telehealth platform.</div><div class="repo-lang"><span class="ldot l-html"></span>HTML · ⭐ 1</div></a>
+        <a href="https://github.com/Elmahrosa/TEOS-Compliance-Kit" class="repo-card" target="_blank"><div class="repo-name">TEOS-Compliance-Kit <span class="repo-badge badge-public">public</span></div><div class="repo-desc">Policy and documentation structures for institutional audits, governance, sovereignty, and regulatory compliance.</div><div class="repo-lang"><span class="ldot l-py"></span>Python · ⭐ 1</div></a>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="contact">
+  <div class="container">
+    <div class="section-label" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</div>
+    <h2 class="fade-in"><span data-en="Bring <em>sovereign AI</em> to any institution, anywhere." data-ar="أحضر <em>الذكاء الاصطناعي السيادي</em> إلى أي مؤسسة، في أي مكان.">Bring <em>sovereign AI</em> to any institution, anywhere.</span></h2>
+    <p style="color:var(--text-dim);font-size:1rem;margin-bottom:3rem;max-width:560px;" data-en="For partnership discussions, government engagements, enterprise pilots, investor conversations, or media inquiries — reach the founder directly." data-ar="لمناقشات الشراكة والتعاملات الحكومية والتجارب المؤسسية ومحادثات المستثمرين أو استفسارات الإعلام — تواصل مباشرة مع المؤسس.">For partnership discussions, government engagements, enterprise pilots, investor conversations, or media inquiries — reach the founder directly.</p>
+    <div class="contact-grid">
+      <div class="contact-item fade-in"><div class="contact-label" data-en="Direct email" data-ar="البريد المباشر">Direct email</div><a href="mailto:ayman@elmahrosa.org" class="contact-link">ayman@elmahrosa.org ↗</a></div>
+      <div class="contact-item fade-in"><div class="contact-label" data-en="LinkedIn" data-ar="لينكد إن">LinkedIn</div><a href="https://linkedin.com/in/aymanseif" class="contact-link" target="_blank">linkedin.com/in/aymanseif ↗</a></div>
+      <div class="contact-item fade-in"><div class="contact-label" data-en="Community" data-ar="المجتمع">Community</div><a href="https://t.me/Elmahrosapi" class="contact-link" target="_blank">t.me/Elmahrosapi ↗</a></div>
+      <div class="contact-item fade-in"><div class="contact-label" data-en="Engineering" data-ar="الهندسة">Engineering</div><a href="https://github.com/Elmahrosa" class="contact-link" target="_blank">github.com/Elmahrosa ↗</a></div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-row">
+          <svg width="28" height="28" viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg"><circle cx="0" cy="0" r="48" fill="none" stroke="#D4A841" stroke-width="1.5"/><line x1="-22" y1="22" x2="-22" y2="-18" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/><line x1="22" y1="22" x2="22" y2="-18" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/><line x1="-22" y1="-18" x2="0" y2="6" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/><line x1="22" y1="-18" x2="0" y2="6" stroke="#D4A841" stroke-width="3.5" stroke-linecap="square"/><circle cx="0" cy="-26" r="3.5" fill="#D4A841"/><line x1="-28" y1="28" x2="28" y2="28" stroke="#D4A841" stroke-width="1.5"/></svg>
+          <span style="font-family:var(--serif);font-size:1rem;font-weight:500;">Elmahrosa <em style="font-style:italic;color:var(--gold);font-weight:300;">International</em></span>
+        </div>
+        <p data-en="Sovereign AI infrastructure for the world. Built in Alexandria. Founded 2007 · Dev 2020." data-ar="بنية تحتية سيادية للذكاء الاصطناعي للعالم. مبني في الإسكندرية. تأسس ٢٠٠٧ · التطوير ٢٠٢٠.">Sovereign AI infrastructure for the world. Built in Alexandria. Founded 2007 · Dev 2020.</p>
+      </div>
+      <div class="footer-col">
+        <h5 data-en="The Stack" data-ar="الحزمة">The Stack</h5>
+        <ul>
+          <li><a href="https://teos-sentinel-shield.vercel.app" target="_blank">Sentinel Shield</a></li>
+          <li><a href="#products">TEOS AI Engine</a></li>
+          <li><a href="#products">UCH Sovereign Core</a></li>
+          <li><a href="#products">TEOS Comply-Crawl</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5 data-en="Company" data-ar="الشركة">Company</h5>
+        <ul>
+          <li><a href="#about" data-en="About" data-ar="عن الشركة">About</a></li>
+          <li><a href="#approach" data-en="Approach" data-ar="المنهجية">Approach</a></li>
+          <li><a href="#partner" data-en="Partners" data-ar="الشركاء">Partners</a></li>
+          <li><a href="#contact" data-en="Contact" data-ar="تواصل">Contact</a></li>
+          <li><a href="/trust" data-en="Trust Center" data-ar="مركز الثقة">Trust Center</a></li>
+          <li><a href="/security-advisory" data-en="Security Advisory" data-ar="النشرة الأمنية">Security Advisory</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5 data-en="Office" data-ar="المكتب">Office</h5>
+        <address>1st Floor<br/>Kamarayet Roushdy Building<br/>Alexandria 21529<br/><span data-en="Arab Republic of Egypt" data-ar="جمهورية مصر العربية">Arab Republic of Egypt</span></address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-en="© 2026 Elmahrosa International · All rights reserved" data-ar="© ٢٠٢٦ إلمهروسة الدولية · جميع الحقوق محفوظة">© 2026 Elmahrosa International · All rights reserved</span>
+      <span data-en="Powered by Claude · Anthropic Partner Network" data-ar="مدعوم بكلود · شبكة شركاء أنثروبيك">Powered by Claude · Anthropic Partner Network</span>
+    </div>
+  </div>
+</footer>
+<script>
+  function setLang(lang) {
+    document.body.classList.remove('en','ar');
+    document.body.classList.add(lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const txt = el.getAttribute('data-' + lang);
+      if (txt) el.innerHTML = txt;
+    });
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
