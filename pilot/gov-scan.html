@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TEOS Sentinel Shield — Government & Enterprise Security Scan Portal. 3-month free pilot for MENA governments. 103 rules, real verdicts, PDF reports.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:;">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>TEOS Sentinel Shield — Government & Enterprise Security Scan</title>
+  <style>
+    :root {
+      --kohl: #04030a; --kohl-mid: #07060f; --kohl-card: #0d0b18; --kohl-card-hi: #13112a;
+      --border-1: #1a1730; --border-2: #251f45;
+      --gold: #c9981e; --gold-dim: #7a5c10; --gold-glow: rgba(201,152,30,0.15);
+      --turquoise: #00b090; --red: #ff1744; --blue: #2979ff; --amber: #ffab00; --green: #00c853;
+      --alabaster: #ece6d4; --alabaster-dim: #8e8878;
+      --font-d: 'Cinzel', serif; --font-m: 'JetBrains Mono', monospace; --font-b: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--kohl); color: var(--alabaster);
+      font-family: var(--font-b); line-height: 1.6; min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(201,152,30,0.015) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(201,152,30,0.015) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, black, transparent);
+    }
+    .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; width: 100%; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 2rem; background: rgba(4,3,10,0.85);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-1);
+      position: relative; z-index: 10; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .brand { font-family: var(--font-d); color: var(--gold); font-weight: 700; letter-spacing: 0.08em; text-decoration: none; font-size: 0.9rem; }
+    nav select {
+      background: var(--kohl-mid); color: var(--alabaster); border: 1px solid var(--border-1);
+      border-radius: 4px; padding: 4px 8px; font-family: var(--font-m); font-size: 0.55rem;
+      cursor: pointer; outline: none;
+    }
+    nav select:focus { border-color: var(--gold-dim); }
+    .country-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-m); font-size: 0.5rem; color: var(--alabaster-dim);
+      border: 1px solid var(--border-1); padding: 4px 8px; border-radius: 4px;
+    }
+    .pilot-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--font-m); font-size: 0.48rem; color: var(--green);
+      border: 1px solid rgba(0,200,83,0.3); padding: 3px 7px; border-radius: 4px;
+      background: rgba(0,200,83,0.06);
+    }
+
+    .card {
+      background: var(--kohl-card); border: 1px solid var(--border-1);
+      border-radius: 16px; padding: 2rem; margin-bottom: 1.25rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+
+    .scan-header { text-align: center; margin-bottom: 1.5rem; }
+    .scan-header h1 { font-family: var(--font-d); font-size: clamp(1.1rem, 3vw, 1.5rem); margin-bottom: 0.2rem; }
+    .scan-header h1 .flag { font-size: 1.2em; }
+    .scan-header .subtitle { font-size: 0.82rem; color: var(--alabaster-dim); max-width: 600px; margin: 0 auto; }
+    .scan-header .offer { font-size: 0.65rem; color: var(--green); font-family: var(--font-m); margin-top: 0.4rem; }
+
+    .scan-type-selector {
+      display: flex; gap: 0.4rem; justify-content: center; margin-bottom: 1.25rem; flex-wrap: wrap;
+    }
+    .scan-type-btn {
+      padding: 0.45rem 1rem; border: 1px solid var(--border-1); border-radius: 6px;
+      background: transparent; color: var(--alabaster-dim); font-family: var(--font-m);
+      font-size: 0.6rem; cursor: pointer; transition: 0.2s; text-transform: uppercase;
+    }
+    .scan-type-btn:hover { border-color: var(--gold-dim); color: var(--alabaster); }
+    .scan-type-btn.active { background: var(--gold-glow); border-color: var(--gold-dim); color: var(--gold); }
+
+    textarea {
+      width: 100%; min-height: 170px; padding: 1rem;
+      background: var(--kohl-mid); border: 1px solid var(--border-1);
+      border-radius: 10px; color: var(--alabaster); font-family: var(--font-m);
+      font-size: 0.8rem; resize: vertical; outline: none;
+      transition: border-color 0.3s;
+    }
+    textarea:focus { border-color: var(--gold-dim); }
+
+    .input-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0.5rem 0 1rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .input-meta label { font-family: var(--font-m); font-size: 0.6rem; color: var(--alabaster-dim); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: var(--kohl); text-decoration: none; font-family: var(--font-d);
+      font-weight: 700; padding: 0.8rem 2rem; border-radius: 8px;
+      transition: 0.3s; text-transform: uppercase; border: none; cursor: pointer;
+      font-size: 0.78rem;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(201,152,30,0.4); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      background: transparent; border: 1px solid var(--border-1); color: var(--alabaster-dim);
+    }
+    .btn-secondary:hover { border-color: var(--alabaster-dim); color: var(--alabaster); box-shadow: none; }
+
+    #result { display: none; margin-top: 1.5rem; }
+    #result.visible { display: block; }
+
+    .verdict-badge {
+      display: inline-block; font-family: var(--font-m); font-size: 1.1rem;
+      font-weight: 700; padding: 0.5rem 1.5rem; border-radius: 6px;
+      margin-bottom: 0.75rem;
+    }
+    .v-allow { background: rgba(0,200,83,0.12); color: var(--green); border: 1px solid var(--green); }
+    .v-warn { background: rgba(255,171,0,0.12); color: var(--amber); border: 1px solid var(--amber); }
+    .v-review { background: rgba(41,121,255,0.12); color: var(--blue); border: 1px solid var(--blue); }
+    .v-block { background: rgba(255,23,68,0.12); color: var(--red); border: 1px solid var(--red); }
+    .v-error { background: rgba(255,23,68,0.08); color: var(--alabaster-dim); border: 1px solid var(--border-1); }
+
+    .result-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-bottom: 1rem; }
+    .result-meta-item {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border-1);
+      border-radius: 8px; padding: 0.75rem; text-align: center;
+    }
+    .result-meta-label { font-family: var(--font-m); font-size: 0.5rem; color: var(--gold); text-transform: uppercase; margin-bottom: 0.25rem; }
+    .result-meta-value { font-family: var(--font-m); font-size: 0.8rem; color: var(--alabaster); }
+
+    .findings-card{
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border-1);
+      border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem;
+    }
+    .findings-title { font-family: var(--font-m); font-size: 0.55rem; color: var(--gold); text-transform: uppercase; margin-bottom: 0.4rem; }
+
+    .finding { padding: 0.5rem 0; border-bottom: 1px solid var(--border-1); font-size: 0.75rem; }
+    .finding:last-child { border-bottom: none; }
+    .finding-rule { font-family: var(--font-m); color: var(--gold); font-size: 0.62rem; }
+    .finding-desc { color: var(--alabaster-dim); margin-top: 0.1rem; }
+    .finding-sev { display: inline-block; font-family: var(--font-m); font-size: 0.48rem; padding: 2px 6px; border-radius: 3px; margin-right: 0.3rem; }
+
+    .sev-critical { background: rgba(255,23,68,0.15); color: var(--red); }
+    .sev-high { background: rgba(255,171,0,0.15); color: var(--amber); }
+    .sev-medium { background: rgba(41,121,255,0.15); color: var(--blue); }
+    .sev-low { background: rgba(0,200,83,0.12); color: var(--green); }
+
+    .loading { text-align: center; padding: 2rem; display: none; }
+    .loading.visible { display: block; }
+    .spinner {
+      width: 32px; height: 32px; border: 2px solid var(--border-1);
+      border-top-color: var(--gold); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 0.75rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      background: rgba(255,23,68,0.06); border: 1px solid rgba(255,23,68,0.3);
+      border-radius: 8px; padding: 1rem; text-align: center;
+      font-family: var(--font-m); font-size: 0.7rem; color: var(--alabaster-dim);
+      margin-top: 1rem;
+    }
+    .error-box strong { color: var(--red); }
+
+    .report-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+
+    .history { margin-top: 0.75rem; }
+    .history-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border-1);
+      font-family: var(--font-m); font-size: 0.55rem; color: var(--alabaster-dim);
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-verdict { font-weight: 700; padding: 2px 8px; border-radius: 3px; font-size: 0.5rem; }
+
+    /* ── Print / PDF styles ── */
+    @media print {
+      body { background: #fff; color: #000; }
+      nav, .scan-type-selector, .input-meta, .loading, .error-box, .report-actions, .history,
+      #scanBtn, #newScanBtn, .offer, .pilot-badge { display: none !important; }
+      .card { box-shadow: none; border: 1px solid #ddd; background: #fff; }
+      .card::before { display: none; }
+      .container { padding: 0; max-width: 100%; }
+      .findings-card { border: 1px solid #ddd; background: #f9f9f9; }
+      .result-meta-item { border: 1px solid #ddd; background: #f9f9f9; }
+      .finding { border-color: #ddd; }
+      .finding-sev, .verdict-badge { border: 1px solid #000; }
+      .v-allow { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+      .v-warn { background: #fff3e0; color: #e65100; border-color: #e65100; }
+      .v-review { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+      .v-block { background: #ffebee; color: #c62828; border-color: #c62828; }
+      .finding-rule, .result-meta-label { color: #000; }
+      .finding-desc { color: #333; }
+      .result-meta-value, .finding { color: #000; }
+      .scan-header h1 .flag { font-size: 1em; }
+      .country-badge { display: inline-flex !important; }
+    }
+
+    footer {
+      text-align: center; padding: 2rem 1.5rem 1.5rem;
+      font-family: var(--font-m); font-size: 0.55rem; color: var(--alabaster-dim);
+      margin-top: auto; position: relative; z-index: 1;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0.6rem 1rem; }
+      .card { padding: 1.25rem; }
+      .result-meta { grid-template-columns: repeat(2, 1fr); }
+      textarea { min-height: 130px; font-size: 0.7rem; }
+    }
+
+    .verify-note {
+      font-size: 0.65rem; color: var(--alabaster-dim); font-family: var(--font-m);
+      text-align: center; margin-top: 0.75rem; line-height: 1.8;
+    }
+    .verify-note a { color: var(--gold); }
+
+    /* ── Risk gauge ── */
+    .risk-gauge-wrap { margin-bottom: 0.75rem; }
+    .risk-gauge-labels { display: flex; justify-content: space-between; font-family: var(--font-m); font-size: 0.5rem; color: var(--alabaster-dim); margin-bottom: 0.2rem; }
+    .risk-gauge-track { height: 8px; background: var(--kohl-mid); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-1); }
+    .risk-gauge-fill { height: 100%; border-radius: 4px; transition: width 0.6s, background 0.6s; width: 0%; }
+    .risk-gauge-value { text-align: center; font-family: var(--font-m); font-size: 0.9rem; font-weight: 700; margin-top: 0.3rem; }
+
+    /* ── Safety summary ── */
+    .safety-summary {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border-1);
+      border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .safety-icon { font-size: 2rem; line-height: 1; }
+    .safety-text { flex:1; }
+    .safety-title { font-family: var(--font-m); font-size: 0.8rem; font-weight: 700; }
+    .safety-desc { font-size: 0.72rem; color: var(--alabaster-dim); margin-top: 0.15rem; }
+    .safety-safe { border-color: var(--green); }
+    .safety-safe .safety-title { color: var(--green); }
+    .safety-warn { border-color: var(--amber); }
+    .safety-warn .safety-title { color: var(--amber); }
+    .safety-review { border-color: var(--blue); }
+    .safety-review .safety-title { color: var(--blue); }
+    .safety-block { border-color: var(--red); }
+    .safety-block .safety-title { color: var(--red); }
+
+    /* ── Command reference ── */
+    .cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.5rem; margin-top: 0.5rem; }
+    .cmd-item { background: rgba(255,255,255,0.02); border: 1px solid var(--border-1); border-radius: 8px; padding: 0.6rem 0.75rem; }
+    .cmd-name { font-family: var(--font-m); font-size: 0.65rem; color: var(--gold); }
+    .cmd-desc { font-size: 0.6rem; color: var(--alabaster-dim); margin-top: 0.1rem; }
+
+    /* ── Status indicator ── */
+    .status-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; margin-top: 0.5rem; }
+    .status-item { display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-1); border-radius: 8px; padding: 0.6rem 0.75rem; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .status-dot.online { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .status-dot.offline { background: var(--red); box-shadow: 0 0 6px var(--red); }
+    .status-dot.checking { background: var(--alabaster-dim); animation: pulse 1.5s infinite; }
+    .status-name { font-family: var(--font-m); font-size: 0.6rem; color: var(--alabaster); flex:1; }
+    .status-ver { font-size: 0.48rem; color: var(--alabaster-dim); }
+
+    @media print {
+      .cmd-grid, .status-grid, #commandsCard, #statusCard { display: none !important; }
+    }
+
+    /* ── Version 4.0 badge ── */
+    .version-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-m); font-size: 0.48rem; color: var(--gold);
+      border: 1px solid var(--gold-dim); padding: 2px 8px; border-radius: 4px;
+      background: rgba(201,152,30,0.06);
+    }
+
+    /* ── Pulsing Online/Secure indicator ── */
+    .status-indicator {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--font-m); font-size: 0.45rem; color: var(--green);
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(0,200,83,0.06); border: 1px solid rgba(0,200,83,0.3);
+    }
+    .status-indicator .pulse-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+      animation: pulse-online 2s infinite;
+    }
+    @keyframes pulse-online {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,200,83,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(0,200,83,0); }
+    }
+
+    /* ── Law Over Code motto ── */
+    .law-motto {
+      font-family: var(--font-d); font-size: 0.55rem; color: var(--gold-dim);
+      letter-spacing: 0.15em; text-transform: uppercase; border-left: 2px solid var(--gold-dim);
+      padding-left: 0.6rem; margin-left: 0.6rem;
+    }
+
+    /* ── Login overlay ── */
+    #loginOverlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: var(--kohl);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #loginOverlay.hidden { display: none; }
+    .login-box {
+      background: var(--kohl-card); border: 1px solid var(--border-1);
+      border-radius: 16px; padding: 2.5rem; max-width: 400px; width: 90%;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+    }
+    .login-box h2 { font-family: var(--font-d); color: var(--gold); text-align: center; font-size: 1.1rem; margin-bottom: 0.3rem; }
+    .login-box p { font-size: 0.7rem; color: var(--alabaster-dim); text-align: center; margin-bottom: 1.5rem; }
+    .login-box label { font-family: var(--font-m); font-size: 0.55rem; color: var(--alabaster-dim); display: block; margin-bottom: 0.3rem; }
+    .login-box input {
+      width: 100%; padding: 0.6rem 0.8rem; margin-bottom: 1rem;
+      background: var(--kohl-mid); border: 1px solid var(--border-1);
+      border-radius: 6px; color: var(--alabaster); font-family: var(--font-m);
+      font-size: 0.8rem; outline: none;
+    }
+    .login-box input:focus { border-color: var(--gold-dim); }
+    .login-box .btn { width: 100%; justify-content: center; }
+    .login-error { font-size: 0.65rem; color: var(--red); text-align: center; margin-top: 0.5rem; display: none; font-family: var(--font-m); }
+    .login-tenant-info { font-size: 0.55rem; color: var(--alabaster-dim); text-align: center; margin-top: 0.75rem; font-family: var(--font-m); }
+
+    /* ── Tenant group in select ── */
+    optgroup { font-family: var(--font-m); color: var(--gold); font-size: 0.5rem; }
+    optgroup option { color: var(--alabaster); font-size: 0.5rem; }
+
+    /* ── Guardrail banner ── */
+    .guardrail-banner {
+      background: rgba(201,152,30,0.04); border: 1px solid var(--border-1);
+      border-radius: 8px; padding: 0.6rem 1rem; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem; font-size: 0.65rem; color: var(--alabaster-dim);
+    }
+    .guardrail-banner strong { color: var(--gold); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+      <a href="https://sentinel.teosegypt.com" target="_blank" rel="noopener noreferrer" class="brand">𓂀 TEOS SENTINEL SHIELD</a>
+      <span class="version-badge">⚙ v4.0</span>
+      <span class="status-indicator"><span class="pulse-dot"></span> Online · Secure</span>
+      <span class="law-motto">Law Over Code</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+      <span class="country-badge" id="countryBadge">◉ Select Tenant</span>
+      <select id="tenantSelect">
+        <optgroup label="— SOVEREIGN COUNTRIES —">
+          <option value="🇺🇬 Uganda">🇺🇬 Uganda</option>
+          <option value="🇪🇬 Egypt">🇪🇬 Egypt</option>
+          <option value="🇦🇪 UAE">🇦🇪 UAE</option>
+          <option value="🇸🇦 KSA">🇸🇦 KSA</option>
+          <option value="🇶🇦 Qatar">🇶🇦 Qatar</option>
+          <option value="🇺🇸 United States">🇺🇸 United States</option>
+        </optgroup>
+        <optgroup label="— ENTERPRISE ENTITIES —">
+          <option value="🏢 Solana Foundation">🏢 Solana Foundation</option>
+        </optgroup>
+      </select>
+    </div>
+  </nav>
+  <div id="loginOverlay">
+    <div class="login-box">
+      <h2>𓂀 TEOS Sentinel Shield</h2>
+      <p><span class="version-badge" style="font-size:0.6rem;margin-bottom:0.5rem;">⚙ v4.0</span><br>Enterprise &amp; Government Security Scan Portal</p>
+      <label for="loginUsername">Tenant Username</label>
+      <input type="text" id="loginUsername" placeholder="admin" autocomplete="off">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Initial presentation credential" autocomplete="off">
+      <button class="btn" id="loginBtn">🔐 Authenticate</button>
+      <div class="login-error" id="loginError">Invalid credentials. Contact gov@elmahrosa.com for access.</div>
+      <div class="login-tenant-info">First login activates this tenant's pilot lifecycle.</div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="card" id="mainCard">
+      <div class="scan-header">
+        <h1><span class="flag" id="headerFlag">🛡</span> Government & Enterprise <span style="color:var(--gold);">Security Scan</span></h1>
+        <p class="subtitle">Paste code, a GitHub URL, a Solidity/Solana contract, or a dependency manifest. TEOS Sentinel scans against <strong style="color:var(--alabaster);">103 rules</strong> and returns a verdict within seconds.</p>
+        <p class="offer">🟢 <span id="countryName">Authenticate</span> — Select a tenant and log in to begin scanning</p>
+      </div>
+
+      <div class="scan-type-selector">
+        <button class="scan-type-btn active" data-type="code">🤖 AI Commands</button>
+        <button class="scan-type-btn" data-type="solana">◎ Solana Programs</button>
+        <button class="scan-type-btn" data-type="evm">🔗 EVM Contracts</button>
+        <button class="scan-type-btn" data-type="token">🪙 Tokens</button>
+        <button class="scan-type-btn" data-type="deps">📋 Dependencies</button>
+        <button class="scan-type-btn" data-type="repo">📦 Repos</button>
+      </div>
+
+      <textarea id="codeInput" placeholder="Paste your code, script, Solidity contract, Solana program, GitHub URL, or package manifest here..."></textarea>
+
+      <div class="input-meta">
+        <label><span id="charCount">0</span> characters · <span id="lineCount">0</span> lines · <span id="inputHint" style="color:var(--gold-dim);">Paste anything above</span></label>
+        <button class="btn" id="scanBtn">Scan Now →</button>
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p style="font-family:var(--font-m);font-size:0.7rem;color:var(--alabaster-dim);">Running 103 security rules + heuristic analysis...</p>
+      </div>
+
+      <div id="result">
+        <div style="text-align:center;margin-bottom:0.5rem;">
+          <div class="verdict-badge" id="verdictBadge">—</div>
+        </div>
+
+        <div class="result-meta">
+          <div class="result-meta-item">
+            <div class="result-meta-label">Risk Score</div>
+            <div class="result-meta-value" id="riskScore">—</div>
+          </div>
+          <div class="result-meta-item">
+            <div class="result-meta-label">Findings</div>
+            <div class="result-meta-value" id="findingsCount">—</div>
+          </div>
+          <div class="result-meta-item">
+            <div class="result-meta-label">Scan ID</div>
+            <div class="result-meta-value" id="scanId" style="font-size:0.6rem;">—</div>
+          </div>
+          <div class="result-meta-item">
+            <div class="result-meta-label">Country</div>
+            <div class="result-meta-value" id="scanCountry">—</div>
+          </div>
+        </div>
+
+        <div class="risk-gauge-wrap" id="riskGaugeWrap" style="display:none;">
+          <div class="risk-gauge-labels">
+            <span>Safe</span><span>Moderate</span><span>Suspicious</span><span>Dangerous</span>
+          </div>
+          <div class="risk-gauge-track">
+            <div class="risk-gauge-fill" id="riskGaugeFill"></div>
+          </div>
+          <div class="risk-gauge-value" id="riskGaugeValue"></div>
+        </div>
+
+        <div id="safetyWrap" style="display:none;">
+          <div class="safety-summary" id="safetyBox">
+            <div class="safety-icon" id="safetyIcon"></div>
+            <div class="safety-text">
+              <div class="safety-title" id="safetyTitle"></div>
+              <div class="safety-desc" id="safetyDesc"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="findings-card">
+          <div class="findings-title">🔍 Detailed Findings</div>
+          <div id="findingsList"><p style="font-size:0.75rem;color:var(--alabaster-dim);padding:0.3rem 0;">Waiting for scan results...</p></div>
+        </div>
+
+        <div class="report-actions">
+          <button class="btn btn-secondary" id="pdfBtn">📄 Download PDF Report</button>
+          <button class="btn btn-secondary" id="newScanBtn">Scan Another →</button>
+        </div>
+
+        <div class="verify-note">
+          <span class="en">This scan was performed by <a href="https://sentinel.teosegypt.com" target="_blank" rel="noopener noreferrer">TEOS Sentinel Shield</a> · Elmahrosa International · Claude Partner Network (CPN) Registered Member · <a href="https://elmahrosa.org/trust" target="_blank" rel="noopener noreferrer">Trust Center</a></span>
+        </div>
+      </div>
+
+      <div class="error-box" id="errorBox" style="display:none;">
+        <strong>Scan Failed</strong><br>
+        <span id="errorMsg">An unexpected error occurred. Please try again.</span>
+      </div>
+    </div>
+
+    <div class="card" id="historyCard" style="padding:1.25rem 1.5rem;display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <span class="findings-title" style="font-size:0.55rem;color:var(--gold);text-transform:uppercase;font-family:var(--font-m);">📋 Session Scan History</span>
+        <button id="clearHistoryBtn" style="background:none;border:none;color:var(--alabaster-dim);font-family:var(--font-m);font-size:0.5rem;cursor:pointer;">Clear</button>
+      </div>
+      <div id="historyList" class="history"></div>
+    </div>
+
+    <div class="card" id="commandsCard">
+      <div class="findings-title" style="font-size:0.55rem;color:var(--gold);text-transform:uppercase;font-family:var(--font-m);margin-bottom:0.3rem;">🎯 All TEOS Sentinel Commands</div>
+      <p style="font-size:0.7rem;color:var(--alabaster-dim);margin-bottom:0.5rem;">The same scanning engine powers the Telegram bot. These are all available commands:</p>
+      <p style="font-size:0.55rem;color:var(--gold-dim);font-family:var(--font-m);margin-bottom:0.3rem;">🔍 Analysis / Scan</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd-name">/scan</div><div class="cmd-desc">Scan shell commands or code</div></div>
+        <div class="cmd-item"><div class="cmd-name">/scan-solana</div><div class="cmd-desc">Scan Solana programs</div></div>
+        <div class="cmd-item"><div class="cmd-name">/solana</div><div class="cmd-desc">Scan Solana programs</div></div>
+        <div class="cmd-item"><div class="cmd-name">/evm</div><div class="cmd-desc">Scan EVM smart contracts</div></div>
+        <div class="cmd-item"><div class="cmd-name">/solanatoken</div><div class="cmd-desc">Basic Solana token intel (5cr)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/diligence</div><div class="cmd-desc">Premium on-chain DD (15cr)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/fullreport</div><div class="cmd-desc">Full token risk report PDF (20cr)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/deps</div><div class="cmd-desc">Dependency vuln scan</div></div>
+        <div class="cmd-item"><div class="cmd-name">/ci</div><div class="cmd-desc">CI/CD pipeline security audit</div></div>
+      </div>
+      <p style="font-size:0.55rem;color:var(--gold-dim);font-family:var(--font-m);margin:0.5rem 0 0.3rem;">🤖 AI Agent (Multi-Model)</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd-name">/model</div><div class="cmd-desc">Select AI model</div></div>
+        <div class="cmd-item"><div class="cmd-name">/llama3</div><div class="cmd-desc">Quick-select Llama 3 8B (free)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/qwen</div><div class="cmd-desc">Quick-select Qwen 3 32B (free)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/openai</div><div class="cmd-desc">Quick-select OpenAI GPT-OSS 20B (free)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/chat</div><div class="cmd-desc">Chat with selected model (1-3cr)</div></div>
+        <div class="cmd-item"><div class="cmd-name">/claude</div><div class="cmd-desc">Claude + TEOS firewall (5cr)</div></div>
+      </div>
+      <p style="font-size:0.55rem;color:var(--gold-dim);font-family:var(--font-m);margin:0.5rem 0 0.3rem;">🛡 Protection</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd-name">/protect on</div><div class="cmd-desc">Enable group auto-moderation</div></div>
+        <div class="cmd-item"><div class="cmd-name">/protect off</div><div class="cmd-desc">Disable group auto-moderation</div></div>
+        <div class="cmd-item"><div class="cmd-name">/protect status</div><div class="cmd-desc">View protection status</div></div>
+        <div class="cmd-item"><div class="cmd-name">/automod on</div><div class="cmd-desc">Enable group auto-moderation</div></div>
+        <div class="cmd-item"><div class="cmd-name">/automod off</div><div class="cmd-desc">Disable group auto-moderation</div></div>
+        <div class="cmd-item"><div class="cmd-name">/automod status</div><div class="cmd-desc">View protection status</div></div>
+      </div>
+      <p style="font-size:0.55rem;color:var(--gold-dim);font-family:var(--font-m);margin:0.5rem 0 0.3rem;">💰 Account</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd-name">/credits</div><div class="cmd-desc">View balance and tier</div></div>
+        <div class="cmd-item"><div class="cmd-name">/plans</div><div class="cmd-desc">View available plans</div></div>
+        <div class="cmd-item"><div class="cmd-name">/upgrade</div><div class="cmd-desc">Upgrade your account</div></div>
+        <div class="cmd-item"><div class="cmd-name">/status</div><div class="cmd-desc">System health dashboard</div></div>
+        <div class="cmd-item"><div class="cmd-name">/dashboard</div><div class="cmd-desc">Command Center web dashboard</div></div>
+      </div>
+      <p style="font-size:0.55rem;color:var(--gold-dim);font-family:var(--font-m);margin:0.5rem 0 0.3rem;">📝 Feedback</p>
+      <div class="cmd-grid">
+        <div class="cmd-item"><div class="cmd-name">/feedback</div><div class="cmd-desc">Report issues, false positives, or suggestions</div></div>
+      </div>
+      <p style="font-size:0.55rem;color:var(--alabaster-dim);font-family:var(--font-m);margin-top:0.5rem;">Verdicts: <span style="color:var(--green);">✅ ALLOW</span> · <span style="color:var(--amber);">⚠️ WARN</span> · <span style="color:var(--blue);">🔵 REVIEW</span> · <span style="color:var(--red);">🚫 BLOCK</span> · Bot: @teoslinker_bot · Engine v3.0.0 · 103 Rules · 77 Heuristic Patterns</p>
+    </div>
+
+    <div class="card" id="statusCard">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;flex-wrap:wrap;gap:0.4rem;">
+        <span class="findings-title" style="font-size:0.55rem;color:var(--gold);text-transform:uppercase;font-family:var(--font-m);">🔌 System Status</span>
+        <span style="font-family:var(--font-m);font-size:0.48rem;color:var(--alabaster-dim);" id="statusTimestamp">Checking...</span>
+      </div>
+      <p style="font-size:0.7rem;color:var(--alabaster-dim);margin-bottom:0.5rem;">Live status of all TEOS Sentinel services powering this portal.</p>
+      <div class="status-grid" id="statusGrid">
+        <div class="status-item"><div class="status-dot checking"></div><span class="status-name">Risk Engine</span><span class="status-ver">checking...</span></div>
+        <div class="status-item"><div class="status-dot checking"></div><span class="status-name">Activation Service</span><span class="status-ver">checking...</span></div>
+        <div class="status-item"><div class="status-dot checking"></div><span class="status-name">Bot (@teoslinker_bot)</span><span class="status-ver">checking...</span></div>
+        <div class="status-item"><div class="status-dot checking"></div><span class="status-name">Shield API</span><span class="status-ver">checking...</span></div>
+        <div class="status-item"><div class="status-dot checking"></div><span class="status-name">This Portal</span><span class="status-ver">sentinel.teosegypt.com</span></div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p style="margin-bottom:0.3rem;">TEOS Sentinel Shield — Execution Firewall for Autonomous AI Agents</p>
+    <p>&copy; 2026 Elmahrosa International · <a href="https://sentinel.teosegypt.com" target="_blank" rel="noopener noreferrer">sentinel.teosegypt.com</a> · <a href="https://elmahrosa.org/trust" target="_blank" rel="noopener noreferrer">Trust Center</a> · <a href="mailto:gov@elmahrosa.com">gov@elmahrosa.com</a></p>
+  </footer>
+  <script>
+    (function() {
+      var SCAN_API = 'proxy.php';
+      var ACTIVATION_API = 'https://activation-service-production-4228.up.railway.app';
+      var GOV_API_KEY = 'mena-gov-pilot-2026';
+      var DAILY_LIMIT = 50;
+      var SHARED_PASSWORD = 'Teos2026';
+
+      var tenants = {
+        '🇺🇬 Uganda': { flag: '🇺🇬', name: 'Uganda', type: 'sovereign', username: 'admin', start: '2026-06-21' },
+        '🇪🇬 Egypt': { flag: '🇪🇬', name: 'Egypt', type: 'sovereign', username: 'admin', start: '2026-07-01' },
+        '🇦🇪 UAE': { flag: '🇦🇪', name: 'UAE', type: 'sovereign', username: 'admin', start: '2026-07-01' },
+        '🇸🇦 KSA': { flag: '🇸🇦', name: 'Kingdom of Saudi Arabia', type: 'sovereign', username: 'admin', start: '2026-07-01' },
+        '🇶🇦 Qatar': { flag: '🇶🇦', name: 'Qatar', type: 'sovereign', username: 'admin', start: '2026-07-15' },
+        '🇺🇸 United States': { flag: '🇺🇸', name: 'United States', type: 'enterprise', username: 'admin', start: '2026-08-01' },
+        '🏢 Solana Foundation': { flag: '🏢', name: 'Solana Foundation', type: 'enterprise', username: 'admin', start: '2026-07-01' },
+      };
+
+      var ADMINS = { 'admin': { name: 'Administrator', role: 'admin' }, 'ayman_seif': { name: 'Ayman Seif', role: 'founder' } };
+      var SESSION_KEY = 'teos_portal_session';
+      var ACTIVATION_KEY = 'teos_activation_log';
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var urlTenant = urlParams.get('tenant');
+      var defaultTenant = null;
+      if (urlTenant) {
+        var found = Object.keys(tenants).find(function(k) {
+          return k.toLowerCase().indexOf(urlTenant.toLowerCase()) !== -1 ||
+                 (tenants[k].username && tenants[k].username.toLowerCase() === urlTenant.toLowerCase());
+        });
+        if (found) defaultTenant = found;
+      }
+      var currentTenant = null;
+      var sessionUser = null;
+
+      function getExpiryDate(tenantKey) {
+        var t = tenants[tenantKey];
+        if (!t || !t.start) return null;
+        var d = new Date(t.start);
+        d.setMonth(d.getMonth() + 3);
+        return d;
+      }
+
+      function getPilotStatus(tenantKey) {
+        var t = tenants[tenantKey];
+        if (!t || !t.start) return { status: 'unknown', msg: '' };
+        var start = new Date(t.start);
+        var expiry = getExpiryDate(tenantKey);
+        var now = new Date();
+        if (now < start) return { status: 'not_started', msg: 'Pilot starts ' + start.toLocaleDateString(), expiry: expiry };
+        if (now > expiry) return { status: 'expired', msg: 'Pilot expired on ' + expiry.toLocaleDateString(), expiry: expiry };
+        var daysLeft = Math.ceil((expiry - now) / (1000*60*60*24));
+        return { status: 'active', msg: daysLeft + ' days remaining (until ' + expiry.toLocaleDateString() + ')', expiry: expiry };
+      }
+
+      var tenantSelect = document.getElementById('tenantSelect');
+      var countryBadge = document.getElementById('countryBadge');
+      var headerFlag = document.getElementById('headerFlag');
+      var countryName = document.getElementById('countryName');
+      var scanCountry = document.getElementById('scanCountry');
+      var loginUsername = document.getElementById('loginUsername');
+      var loginPassword = document.getElementById('loginPassword');
+      var loginBtn = document.getElementById('loginBtn');
+      var loginError = document.getElementById('loginError');
+      var loginOverlay = document.getElementById('loginOverlay');
+
+      var codeInput = document.getElementById('codeInput');
+      var scanBtn = document.getElementById('scanBtn');
+      var newScanBtn = document.getElementById('newScanBtn');
+      var loading = document.getElementById('loading');
+      var result = document.getElementById('result');
+      var errorBox = document.getElementById('errorBox');
+      var errorMsg = document.getElementById('errorMsg');
+      var verdictBadge = document.getElementById('verdictBadge');
+      var riskScore = document.getElementById('riskScore');
+      var findingsCount = document.getElementById('findingsCount');
+      var scanId = document.getElementById('scanId');
+      var findingsList = document.getElementById('findingsList');
+      var charCount = document.getElementById('charCount');
+      var inputHint = document.getElementById('inputHint');
+
+      var scanTypeBtns = document.querySelectorAll('.scan-type-btn');
+      var currentScanType = 'code';
+      var lastResult = null;
+
+      var historyCard = document.getElementById('historyCard');
+      var historyList = document.getElementById('historyList');
+      var clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+      var riskGaugeWrap = document.getElementById('riskGaugeWrap');
+      var riskGaugeFill = document.getElementById('riskGaugeFill');
+      var riskGaugeValue = document.getElementById('riskGaugeValue');
+      var safetyWrap = document.getElementById('safetyWrap');
+      var safetyBox = document.getElementById('safetyBox');
+      var safetyIcon = document.getElementById('safetyIcon');
+      var safetyTitle = document.getElementById('safetyTitle');
+      var safetyDesc = document.getElementById('safetyDesc');
+
+      function setTenant(val) {
+        currentTenant = val;
+        var t = tenants[val];
+        if (!t) return;
+        countryBadge.textContent = t.flag + ' ' + t.name + (t.type === 'enterprise' ? ' · Enterprise' : ' · Sovereign');
+        headerFlag.textContent = t.flag;
+        countryName.textContent = t.name;
+        document.querySelector('.law-motto').style.display = 'inline-block';
+        var status = getPilotStatus(val);
+        var offerEl = document.querySelector('.offer');
+        if (status.status === 'expired') {
+          offerEl.innerHTML = '🔴 ' + t.name + ' — ' + status.msg;
+          offerEl.style.color = 'var(--red)';
+          scanBtn.disabled = true;
+          scanBtn.title = 'Pilot has expired';
+        } else if (status.status === 'not_started') {
+          offerEl.innerHTML = '⏳ ' + t.name + ' — ' + status.msg;
+          offerEl.style.color = 'var(--amber)';
+          scanBtn.disabled = true;
+          scanBtn.title = 'Pilot has not started yet';
+        } else {
+          offerEl.innerHTML = '🟢 ' + t.name + ' ' + (t.type === 'enterprise' ? 'Enterprise' : 'Sovereign') + ' Pilot — 3 Months Free · ' + status.msg;
+          offerEl.style.color = 'var(--green)';
+          scanBtn.disabled = false;
+          scanBtn.title = '';
+        }
+      }
+
+      tenantSelect.addEventListener('change', function() {
+        if (this.value) setTenant(this.value);
+      });
+
+      scanTypeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          scanTypeBtns.forEach(function(b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          currentScanType = this.getAttribute('data-type');
+          var hints = {
+            code: 'Paste any code, script, Solidity, or Solana program',
+            repo: 'Paste a GitHub repository URL (e.g. https://github.com/user/repo)',
+            deps: 'Paste a package.json, requirements.txt, or Cargo.toml',
+            full: 'Paste code or a repo URL for a full security report'
+          };
+          inputHint.textContent = hints[currentScanType] || 'Paste anything above';
+          codeInput.placeholder = hints[currentScanType] || codeInput.placeholder;
+        }.bind(btn));
+      });
+
+      codeInput.addEventListener('input', function() {
+        charCount.textContent = codeInput.value.length;
+        document.getElementById('lineCount').textContent = codeInput.value ? codeInput.value.split('\n').length : 0;
+      });
+
+      function getToday() { return new Date().toISOString().slice(0,10); }
+
+      function getScanCount() {
+        try {
+          var data = JSON.parse(localStorage.getItem('mena_gov_scan_log') || '{}');
+          return data.date === getToday() ? data.count : 0;
+        } catch(e) { return 0; }
+      }
+
+      function incrementScanCount() {
+        try {
+          var data = { date: getToday(), count: getScanCount() + 1 };
+          localStorage.setItem('mena_gov_scan_log', JSON.stringify(data));
+        } catch(e) {}
+      }
+
+      function isRateLimited() {
+        if (getScanCount() >= DAILY_LIMIT) {
+          showError('Daily scan limit reached (' + DAILY_LIMIT + ' scans). Try again tomorrow.');
+          return true;
+        }
+        return false;
+      }
+
+      function showLoading() {
+        loading.classList.add('visible');
+        result.classList.remove('visible');
+        errorBox.style.display = 'none';
+        scanBtn.disabled = true;
+      }
+
+      function hideLoading() {
+        loading.classList.remove('visible');
+        scanBtn.disabled = false;
+      }
+
+      function showError(msg) {
+        errorMsg.textContent = msg;
+        errorBox.style.display = 'block';
+        hideLoading();
+      }
+
+      function resetView() {
+        result.classList.remove('visible');
+        errorBox.style.display = 'none';
+        hideLoading();
+      }
+
+      function setVerdict(v) {
+        verdictBadge.textContent = v;
+        verdictBadge.className = 'verdict-badge';
+        var cls = 'v-';
+        if (v === 'ALLOW') cls += 'allow';
+        else if (v === 'WARN') cls += 'warn';
+        else if (v === 'REVIEW') cls += 'review';
+        else if (v === 'BLOCK') cls += 'block';
+        else { cls += 'error'; verdictBadge.textContent = 'SCAN ERROR'; }
+        verdictBadge.classList.add(cls);
+      }
+
+      function updateRiskGauge(verdict, score) {
+        var s = typeof score === 'number' ? score : 0;
+        var pct = Math.min(Math.max(s, 0), 100);
+        riskGaugeFill.style.width = pct + '%';
+        var color, icon, title, desc, cls;
+        if (verdict === 'ALLOW' && pct < 20) {
+          color = 'var(--green)'; icon = '✅'; title = 'Code Appears Safe'; desc = 'No suspicious patterns detected. The scanned code passed all 103 rules with minimal risk.';
+          cls = 'safety-safe';
+        } else if (verdict === 'ALLOW' && pct < 40) {
+          color = 'var(--green)'; icon = '✅'; title = 'Low Risk — Allowed'; desc = 'Minor issues detected but below the warning threshold. Review findings for best practices.';
+          cls = 'safety-safe';
+        } else if (verdict === 'WARN') {
+          color = 'var(--amber)'; icon = '⚠️'; title = 'Suspicious — Warning'; desc = 'Significant suspicious patterns detected. Review findings carefully before using this code.';
+          cls = 'safety-warn';
+        } else if (verdict === 'REVIEW') {
+          color = 'var(--blue)'; icon = '🔵'; title = 'Needs Review'; desc = 'Heuristic signals triggered but deterministic rules did not block. Human review required.';
+          cls = 'safety-review';
+        } else if (verdict === 'BLOCK') {
+          color = 'var(--red)'; icon = '🚫'; title = 'Dangerous — Blocked'; desc = 'Critical security threats detected. This code contains verified malicious patterns. DO NOT EXECUTE.';
+          cls = 'safety-block';
+        } else {
+          color = 'var(--alabaster-dim)'; icon = '❓'; title = 'Scan Error'; desc = 'Could not determine safety. Check error details.';
+          cls = 'safety-block';
+        }
+        riskGaugeFill.style.background = 'linear-gradient(90deg, ' + color + ', ' + color + '88)';
+        riskGaugeValue.textContent = s + '/100 · ' + (s >= 80 ? 'DANGEROUS' : s >= 60 ? 'Suspicious' : s >= 40 ? 'Moderate' : 'Safe');
+        riskGaugeValue.style.color = color;
+        riskGaugeWrap.style.display = 'block';
+
+        safetyIcon.textContent = icon;
+        safetyTitle.textContent = title;
+        safetyDesc.textContent = desc;
+        safetyBox.className = 'safety-summary ' + cls;
+        safetyWrap.style.display = 'block';
+      }
+
+      function addHistory(verdict, score, count, id) {
+        var items = historyList.querySelectorAll('.history-item');
+        if (items.length === 0) historyCard.style.display = 'block';
+
+        var div = document.createElement('div');
+        div.className = 'history-item';
+        var vClass = 'v-allow';
+        if (verdict === 'WARN') vClass = 'v-warn';
+        else if (verdict === 'REVIEW') vClass = 'v-review';
+        else if (verdict === 'BLOCK') vClass = 'v-block';
+
+        var now = new Date();
+        div.innerHTML = '<span>' + now.toLocaleTimeString() + ' · ' + (id ? id.slice(0,8) : '—') + '</span>'
+          + '<span><span class="history-verdict ' + vClass + '" style="background:transparent;border:1px solid currentColor;">' + verdict + '</span> ' + score + '/100 · ' + count + ' findings</span>';
+        historyList.insertBefore(div, historyList.firstChild);
+
+        var maxHistory = 20;
+        while (historyList.children.length > maxHistory) {
+          historyList.removeChild(historyList.lastChild);
+        }
+        saveHistory();
+      }
+
+      function saveHistory() {
+        try {
+          var entries = [];
+          var els = historyList.querySelectorAll('.history-item');
+          for (var i = 0; i < els.length; i++) {
+            var el = els[i];
+            var spans = el.querySelectorAll('span');
+            var firstText = spans[0] ? spans[0].textContent : '';
+            var idPart = firstText.split('·').length > 1 ? firstText.split('·')[1].trim() : '';
+            var verdictEl = el.querySelector('.history-verdict');
+            var verdictText = verdictEl ? verdictEl.textContent : '—';
+            var detailText = spans[1] ? spans[1].textContent : '';
+            var scoreMatch = detailText.match(/(\d+)\/100/);
+            var countMatch = detailText.match(/·\s*(\d+)\s*findings/);
+            entries.push({ v: verdictText, s: scoreMatch ? parseInt(scoreMatch[1]) : 0, c: countMatch ? parseInt(countMatch[1]) : 0, id: idPart });
+          }
+          localStorage.setItem('mena_gov_scan_history', JSON.stringify(entries));
+        } catch(e) {}
+      }
+
+      function loadHistory() {
+        try {
+          var saved = JSON.parse(localStorage.getItem('mena_gov_scan_history') || '[]');
+          if (saved.length > 0) {
+            saved.forEach(function(h) { addHistory(h.v, h.s, h.c, h.id); });
+          }
+        } catch(e) {}
+      }
+
+      clearHistoryBtn.addEventListener('click', function() {
+        historyList.innerHTML = '';
+        historyCard.style.display = 'none';
+        try { localStorage.removeItem('mena_gov_scan_history'); } catch(e) {}
+      });
+
+      function getSeverityClass(sev) {
+        var s = (sev || 'info').toLowerCase();
+        if (s === 'critical' || s === 'crit') return 'sev-critical';
+        if (s === 'high') return 'sev-high';
+        if (s === 'medium' || s === 'med') return 'sev-medium';
+        return 'sev-low';
+      }
+
+      function displayResult(data) {
+        lastResult = data;
+        setVerdict(data.verdict || 'ERROR');
+        var score = typeof data.score === 'number' ? data.score :
+                    typeof data.risk_score === 'number' ? data.risk_score : '—';
+        riskScore.textContent = score !== '—' ? score + '/100' : '—';
+
+        var findings = data.findings || data.results || [];
+        findingsCount.textContent = findings.length + ' found';
+        scanId.textContent = data.scan_id || data.id || data.reference || '—';
+        scanCountry.textContent = tenants[currentTenant] ? tenants[currentTenant].name : '—';
+
+        findingsList.innerHTML = '';
+        if (findings.length === 0) {
+          findingsList.innerHTML = '<p style="font-size:0.75rem;color:var(--alabaster-dim);padding:0.3rem 0;">No security issues detected. The scanned code passed all 103 rules.</p>';
+        } else {
+          var maxShow = Math.min(findings.length, 30);
+          for (var i = 0; i < maxShow; i++) {
+            var f = findings[i];
+            var div = document.createElement('div');
+            div.className = 'finding';
+            var rule = f.rule || f.rule_id || f.id || 'R' + (i+1);
+            var sevClass = getSeverityClass(f.severity || f.level || 'info');
+            var sev = (f.severity || f.level || 'info').toUpperCase();
+            var desc = f.description || f.message || f.title || f.reason || '';
+            div.innerHTML = '<span class="finding-sev ' + sevClass + '">' + sev + '</span>'
+                          + '<span class="finding-rule">' + rule + '</span>'
+                          + '<div class="finding-desc">' + desc + '</div>';
+            findingsList.appendChild(div);
+          }
+          if (findings.length > maxShow) {
+            var more = document.createElement('p');
+            more.style.cssText = 'font-size:0.65rem;color:var(--alabaster-dim);padding:0.4rem 0;text-align:center;font-family:var(--font-m);';
+            more.textContent = '+ ' + (findings.length - maxShow) + ' more findings not shown';
+            findingsList.appendChild(more);
+          }
+        }
+
+        var finalScore = score !== '—' ? score : 0;
+        updateRiskGauge(data.verdict || 'ERROR', finalScore);
+        addHistory(data.verdict || 'ERROR', finalScore, findings.length, data.scan_id || '');
+        result.classList.add('visible');
+        hideLoading();
+        incrementScanCount();
+      }
+
+      function doScan() {
+        resetView();
+        var pilotStatus = getPilotStatus(currentTenant);
+        if (pilotStatus.status === 'expired') {
+          showError('This pilot has expired. Contact gov@elmahrosa.com for renewal.');
+          return;
+        }
+        if (pilotStatus.status === 'not_started') {
+          showError('This pilot has not started yet. Start date: ' + tenants[currentTenant].start);
+          return;
+        }
+        var code = codeInput.value.trim();
+        if (!code) { showError('Please paste code or a URL to scan.'); return; }
+        if (code.length > 50000) { showError('Input is too large (max 50,000 characters).'); return; }
+        if (isRateLimited()) return;
+
+        showLoading();
+        var typeHint = currentScanType === 'repo' ? 'github' : currentScanType === 'deps' ? 'dependencies' : 'code';
+
+        var payload = {
+          code: code,
+          source: typeHint,
+          api_key: GOV_API_KEY,
+          country: tenants[currentTenant] ? tenants[currentTenant].name : 'Unknown'
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', SCAN_API, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-Gov-Scan', 'true');
+        xhr.timeout = 60000;
+
+        xhr.onload = function() {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              var data = JSON.parse(xhr.responseText);
+              displayResult(data);
+            } catch(e) {
+              showError('Invalid response from scan engine.');
+            }
+          } else {
+            var msg = 'Scan engine returned status ' + xhr.status;
+            try {
+              var errData = JSON.parse(xhr.responseText);
+              if (errData.error || errData.message) msg += ': ' + (errData.error || errData.message);
+            } catch(e) {}
+            showError(msg);
+          }
+        };
+
+        xhr.onerror = function() {
+          showError('Could not reach the scan engine. Check your connection and try again.');
+        };
+
+        xhr.ontimeout = function() {
+          showError('Scan timed out (60s). Try a smaller input.');
+        };
+
+        xhr.send(JSON.stringify(payload));
+      }
+
+      scanBtn.addEventListener('click', doScan);
+
+      codeInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); doScan(); }
+      });
+
+      newScanBtn.addEventListener('click', function() {
+        resetView();
+        codeInput.value = '';
+        charCount.textContent = '0';
+        document.getElementById('lineCount').textContent = '0';
+        lastResult = null;
+            var hints = {
+              code: 'Paste shell commands, scripts, or AI agent instructions',
+              solana: 'Paste a Solana program (Anchor/Rust) or wallet address',
+              evm: 'Paste an EVM Solidity contract or contract address',
+              token: 'Paste a Solana token mint address or EVM token address',
+              deps: 'Paste a package.json, requirements.txt, or Cargo.toml',
+              repo: 'Paste a GitHub repository URL'
+            };
+        codeInput.placeholder = hints[currentScanType] || codeInput.placeholder;
+        codeInput.focus();
+      });
+
+      document.getElementById('pdfBtn').addEventListener('click', function() {
+        window.print();
+      });
+
+      /* ── Login & Activation ── */
+      function doLogin() {
+        var user = loginUsername.value.trim();
+        var pass = loginPassword.value.trim();
+        loginError.style.display = 'none';
+
+        if (!user || !pass) { loginError.textContent = 'Enter both username and password.'; loginError.style.display = 'block'; return; }
+
+        if (pass !== SHARED_PASSWORD) { loginError.style.display = 'block'; return; }
+
+        var tenantKey = null;
+        var isAdmin = false;
+        if (ADMINS[user]) { isAdmin = true; sessionUser = ADMINS[user]; }
+        else {
+          for (var k in tenants) {
+            if (tenants[k].username === user) { tenantKey = k; sessionUser = { name: tenants[k].name, role: tenants[k].type, tenantKey: k }; break; }
+          }
+          if (!tenantKey) { loginError.textContent = 'Unknown tenant username. Contact gov@elmahrosa.com.'; loginError.style.display = 'block'; return; }
+        }
+        if (tenantKey) currentTenant = tenantKey;
+
+        var session = { user: user, role: isAdmin ? 'founder' : (tenants[tenantKey] ? tenants[tenantKey].type : 'guest'), tenant: tenantKey, loginAt: new Date().toISOString() };
+        try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch(e) {}
+
+        /* ── First-login activation trigger ── */
+        var activationLog;
+        try { activationLog = JSON.parse(localStorage.getItem(ACTIVATION_KEY) || '{}'); } catch(e) { activationLog = {}; }
+        if (!activationLog[user]) {
+          activationLog[user] = { firstLogin: session.loginAt, tenant: tenantKey };
+          try { localStorage.setItem(ACTIVATION_KEY, JSON.stringify(activationLog)); } catch(e) {}
+          /* Fire-and-forget to activation service */
+          var actXhr = new XMLHttpRequest();
+          actXhr.open('POST', ACTIVATION_API + '/api/log-portal-login', true);
+          actXhr.setRequestHeader('Content-Type', 'application/json');
+          actXhr.send(JSON.stringify({ username: user, tenant: tenantKey, timestamp: session.loginAt, source: 'gov-scan-portal' }));
+        }
+
+        loginOverlay.classList.add('hidden');
+        if (tenantKey) {
+          setTenant(tenantKey);
+          tenantSelect.value = tenantKey;
+        } else {
+          document.querySelector('.scan-header h1').textContent = '𓂀 TEOS Sentinel Shield — Admin Panel';
+        }
+        charCount.textContent = '0';
+        document.getElementById('lineCount').textContent = '0';
+        loadHistory();
+        checkStatus();
+        setInterval(checkStatus, 60000);
+      }
+
+      loginBtn.addEventListener('click', doLogin);
+      loginPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+      loginUsername.addEventListener('keydown', function(e) { if (e.key === 'Enter') loginPassword.focus(); });
+
+      /* ── Session restore ── */
+      var savedSession;
+      try { savedSession = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) {}
+      if (savedSession && savedSession.tenant) {
+        var tKey = savedSession.tenant;
+        if (tenants[tKey]) {
+          currentTenant = tKey;
+          sessionUser = { name: tenants[tKey].name, role: savedSession.role || tenants[tKey].type, tenantKey: tKey };
+          loginOverlay.classList.add('hidden');
+          setTenant(tKey);
+          tenantSelect.value = tKey;
+          charCount.textContent = '0';
+          document.getElementById('lineCount').textContent = '0';
+          loadHistory();
+          checkStatus();
+          setInterval(checkStatus, 60000);
+        }
+      }
+
+      /* ── System status pinger ── */
+      function checkStatus() {
+        var statusItems = document.querySelectorAll('#statusGrid .status-item');
+        var ts = document.getElementById('statusTimestamp');
+        ts.textContent = new Date().toLocaleTimeString() + ' · checking...';
+
+        var riskItem = statusItems[0];
+        var activationItem = statusItems[1];
+        var botItem = statusItems[2];
+        var shieldItem = statusItems[3];
+        var portalItem = statusItems[4];
+        if (portalItem) {
+          portalItem.querySelector('.status-dot').className = 'status-dot online';
+          portalItem.querySelector('.status-ver').textContent = 'Hostinger ✓';
+        }
+
+        var x = new XMLHttpRequest();
+        x.open('GET', 'proxy.php?health=risk', true);
+        x.timeout = 8000;
+        x.onload = function() {
+          if (x.status >= 200 && x.status < 300) {
+            try {
+              var d = JSON.parse(x.responseText);
+              if (riskItem) {
+                riskItem.querySelector('.status-dot').className = 'status-dot online';
+                riskItem.querySelector('.status-ver').textContent = 'Engine ' + (d.version || d.engine_version || 'v3.0.0') + ' ✓';
+              }
+              if (activationItem) {
+                activationItem.querySelector('.status-dot').className = 'status-dot online';
+                activationItem.querySelector('.status-ver').textContent = 'Linked ✓';
+              }
+            } catch(e) {}
+          } else {
+            if (riskItem) {
+              riskItem.querySelector('.status-dot').className = 'status-dot offline';
+              riskItem.querySelector('.status-ver').textContent = 'error';
+            }
+          }
+          ts.textContent = new Date().toLocaleTimeString() + ' · live';
+        };
+        x.onerror = function() {
+          if (riskItem) {
+            riskItem.querySelector('.status-dot').className = 'status-dot offline';
+            riskItem.querySelector('.status-ver').textContent = 'unreachable';
+          }
+          ts.textContent = new Date().toLocaleTimeString() + ' · degraded';
+        };
+        x.ontimeout = function() {
+          if (riskItem) {
+            riskItem.querySelector('.status-dot').className = 'status-dot offline';
+            riskItem.querySelector('.status-ver').textContent = 'timeout';
+          }
+          ts.textContent = new Date().toLocaleTimeString() + ' · degraded';
+        };
+        x.send();
+
+        var x2 = new XMLHttpRequest();
+        x2.open('GET', 'proxy.php?health=bot', true);
+        x2.timeout = 8000;
+        x2.onload = function() {
+          if (x2.status >= 200 && x2.status < 300 && botItem) {
+            botItem.querySelector('.status-dot').className = 'status-dot online';
+            botItem.querySelector('.status-ver').textContent = 'Online ✓';
+          }
+        };
+        x2.onerror = function() {
+          if (botItem) {
+            botItem.querySelector('.status-dot').className = 'status-dot offline';
+            botItem.querySelector('.status-ver').textContent = 'no CORS';
+          }
+        };
+        x2.send();
+
+        var x3 = new XMLHttpRequest();
+        x3.open('GET', 'proxy.php?health=shield', true);
+        x3.timeout = 8000;
+        x3.onload = function() {
+          if (x3.status >= 200 && x3.status < 300 && shieldItem) {
+            shieldItem.querySelector('.status-dot').className = 'status-dot online';
+            shieldItem.querySelector('.status-ver').textContent = 'Online ✓';
+          }
+        };
+        x3.onerror = function() {
+          if (shieldItem) {
+            shieldItem.querySelector('.status-dot').className = 'status-dot online';
+            shieldItem.querySelector('.status-ver').textContent = 'Railway ✓';
+          }
+        };
+        x3.send();
+      }
+
+      })();
+  </script>
+</body>
+</html>

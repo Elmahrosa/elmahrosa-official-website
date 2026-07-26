@@ -1,0 +1,1 @@
+<?php header("Location: /pilot/gov-scan.html"); exit;

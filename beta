@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TEOS Sentinel Shield — Execution Firewall for Autonomous AI Agents. 111 security rules, 4 verdict types. Closed Beta now open. 200 free credits.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.youtube.com; connect-src 'self';">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>𓂀</text></svg>">
+  <title>TEOS Sentinel Shield — Execution Firewall for Autonomous AI Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kohl: #04030a; --kohl-mid: #07060f; --kohl-card: #0d0b18; --kohl-card-hi: #13112a;
+      --border-1: #1a1730; --border-2: #251f45;
+      --gold: #c9981e; --gold-dim: #7a5c10; --gold-glow: rgba(201,152,30,0.15);
+      --turquoise: #00b090; --red: #ff1744; --blue: #2979ff; --amber: #ffab00; --green: #00c853;
+      --alabaster: #ece6d4; --alabaster-dim: #8e8878;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-hi: 0 8px 40px rgba(201,152,30,0.08);
+      --font-d: 'Cinzel', serif; --font-m: 'JetBrains Mono', monospace; --font-b: 'Inter', sans-serif; --font-ar: 'Cairo', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--kohl); color: var(--alabaster);
+      font-family: var(--font-b); line-height: 1.6; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(201,152,30,0.015) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(201,152,30,0.015) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, black, transparent);
+    }
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; background: rgba(4,3,10,0.85);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-1);
+    }
+    .brand { font-family: var(--font-d); color: var(--gold); font-weight: 700; letter-spacing: 0.08em; text-decoration: none; font-size: 1rem; }
+    .container { max-width: 920px; margin: 0 auto; padding: 5.5rem 1.5rem 4rem; position: relative; z-index: 1; }
+
+    .card {
+      background: var(--kohl-card); border: 1px solid var(--border-1);
+      border-radius: 16px; padding: 2.5rem; margin-bottom: 1.25rem;
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .card:hover { border-color: var(--border-2); box-shadow: var(--shadow-hi); }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+
+    .hero-card { text-align: center; padding: 3rem 2rem; }
+    .badge {
+      display: inline-block; padding: 0.35rem 0.9rem; border: 1px solid var(--gold-dim);
+      background: var(--gold-glow); color: var(--gold);
+      font-family: var(--font-m); font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 1.25rem; border-radius: 20px;
+    }
+    h1 { font-family: var(--font-d); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; line-height: 1.2; margin-bottom: 0.75rem; }
+    h1 .gold { color: var(--gold); }
+    .hero-tagline { font-size: 1rem; color: var(--alabaster-dim); max-width: 520px; margin: 0 auto 1.5rem; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stat {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-1);
+      border-radius: 10px; padding: 1rem 0.5rem; text-align: center;
+    }
+    .stat-num { font-family: var(--font-d); font-size: 1.5rem; font-weight: 900; color: var(--gold); }
+    .stat-label { font-family: var(--font-m); font-size: 0.55rem; color: var(--alabaster-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+
+    .verdicts { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .verdict { font-family: var(--font-m); font-size: 0.65rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 4px; }
+    .v-allow { background: rgba(0,200,83,0.12); color: var(--green); }
+    .v-warn { background: rgba(255,171,0,0.12); color: var(--amber); }
+    .v-review { background: rgba(41,121,255,0.12); color: var(--blue); }
+    .v-block { background: rgba(255,23,68,0.12); color: var(--red); }
+
+    .section-label { font-family: var(--font-m); font-size: 0.6rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+    h2 { font-family: var(--font-d); font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .section-sub { font-size: 0.85rem; color: var(--alabaster-dim); margin-bottom: 1.25rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: var(--kohl); text-decoration: none; font-family: var(--font-d);
+      font-weight: 700; padding: 0.85rem 2rem; border-radius: 8px;
+      transition: 0.3s; box-shadow: 0 2px 12px rgba(201,152,30,0.25);
+      text-transform: uppercase; font-size: 0.8rem; border: none; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(201,152,30,0.4); }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.62rem; border-radius: 6px; }
+    .btn-cta {
+      font-size: 0.9rem; padding: 1rem 2.5rem; margin: 0.5rem;
+    }
+
+    .flow { display: flex; flex-direction: column; gap: 0.75rem; text-align: left; }
+    .flow-step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 1.25rem; background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-1); border-radius: 10px;
+    }
+    .flow-num {
+      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold-glow); border: 1px solid var(--gold-dim);
+      color: var(--gold); font-family: var(--font-d); font-weight: 700;
+      font-size: 0.75rem; display: flex; align-items: center; justify-content: center;
+    }
+    .flow-content { flex: 1; }
+    .flow-title { font-family: var(--font-m); font-size: 0.8rem; color: var(--alabaster); font-weight: 600; }
+    .flow-desc { font-size: 0.75rem; color: var(--alabaster-dim); margin-top: 0.2rem; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 0; }
+    .feature-card { padding: 1.25rem; border: 1px solid var(--border-1); background: var(--kohl-card); border-radius: 12px; box-shadow: var(--shadow); }
+    .feature-card h3 { font-family: var(--font-d); color: var(--gold); margin-bottom: 0.4rem; font-size: 0.85rem; }
+    .feature-card p { font-size: 0.8rem; color: var(--alabaster-dim); }
+
+    .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.6rem; margin-bottom: 0.75rem; }
+    .sub-card { background: rgba(255,255,255,0.02); padding: 0.85rem; border: 1px solid var(--border-1); border-radius: 8px; }
+    .sub-card-label { font-family: var(--font-m); font-size: 0.55rem; color: var(--gold); text-transform: uppercase; margin-bottom: 0.25rem; }
+    .sub-card-text { font-family: var(--font-m); font-size: 0.72rem; color: var(--alabaster); }
+
+    .ar { font-family: var(--font-ar); direction: rtl; font-size: 0.9em; color: var(--alabaster-dim); line-height: 1.9; font-weight: 400; letter-spacing: 0; }
+    .sep { border: none; border-top: 1px solid var(--border-1); margin: 1.5rem 0; }
+    .notice {
+      background: rgba(201,152,30,0.06); border: 1px solid var(--gold-dim);
+      border-radius: 10px; padding: 1rem 1.5rem; font-family: var(--font-m);
+      font-size: 0.72rem; color: var(--alabaster-dim); text-align: center;
+      margin-bottom: 1.25rem;
+    }
+
+    footer { text-align: center; padding: 2.5rem 0 1rem; font-family: var(--font-m); font-size: 0.65rem; color: var(--alabaster-dim); }
+
+    @media (max-width: 600px) {
+      nav { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.4rem; }
+      .container { padding: 5rem 1rem 3rem; }
+      .card { padding: 1.5rem; border-radius: 12px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      nav div { flex-wrap: wrap; gap: 0.4rem; }
+      .btn-cta { font-size: 0.75rem; padding: 0.75rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#" class="brand">𓂀 TEOS SENTINEL SHIELD</a>
+    <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-m);font-size:0.5rem;color:var(--gold);letter-spacing:0.03em;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;"></span><span class="en">Registered Member · Claude Partner Network (CPN)</span><span class="ar" style="display:none;font-size:0.95em;">عضو مسجل · شبكة كلود بارتنر (CPN)</span></span>
+      <span id="lang-toggle" style="font-family:var(--font-m);font-size:0.55rem;color:var(--alabaster-dim);cursor:pointer;border:1px solid var(--border-1);padding:3px 6px;border-radius:4px;user-select:none;"><span style="color:var(--gold);">AR</span> | EN</span>
+      <a href="https://t.me/teoslinker_bot" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-m);font-size:0.55rem;color:var(--alabaster-dim);text-decoration:none;border:1px solid var(--border-1);padding:3px 6px;border-radius:4px;"><span class="en">Bot Dashboard</span><span class="ar" style="display:none;">لوحة البوت</span></a>
+    </div>
+  </nav>
+  <div class="container">
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 1: HERO -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card hero-card">
+      <div class="badge"><span class="en">🔒 Closed Beta • Active Testing Program</span><span class="ar" style="display:none;">🔒 بيتا مغلقة • برنامج اختبار نشط</span></div>
+      <h1><span class="en">TEOS Sentinel Shield</span><span class="ar" style="display:none;">تيوس ستنينل شيلد</span></h1>
+      <p class="hero-tagline"><span class="en">Execution Firewall for Autonomous AI Agents</span><span class="ar" style="display:none;">جدار ناري لتنفيذ الوكلاء المستقلين</span></p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">111</div>
+          <div class="stat-label"><span class="en">Security Rules</span><span class="ar" style="display:none;">قاعدة أمنية</span></div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label"><span class="en">Verdict Types</span><span class="ar" style="display:none;">أنواع القرارات</span></div>
+        </div>
+
+        <!-- CBE/FRA Dual-Mandate Banking Layer Card -->
+        <div style="grid-column:1/-1;background:linear-gradient(135deg,rgba(212,168,67,0.08),rgba(30,77,140,0.05));border:1px solid rgba(212,168,67,0.3);border-radius:10px;padding:18px;margin:16px 0;">
+          <div style="font-family:var(--font-d);font-size:0.7rem;font-weight:700;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+            <span class="en">🏛️ CBE / FRA Dual-Mandate Compliance Layer</span>
+            <span class="ar" style="display:none;">🏛️ طبقة الامتثال للائحة المزدوجة CBE / FRA</span>
+          </div>
+          <div style="font-family:var(--font-m);font-size:0.65rem;color:var(--alabaster-dim);line-height:1.8;">
+            <span class="en">
+              <strong style="color:var(--gold-dim);">R109:</strong> Cross-Identity Silent Trust — detects implicit CBE/FRA identity binding without tamper-evident attestation.<br>
+              <strong style="color:var(--gold-dim);">R110:</strong> Unassigned Dispute Escalation — flags BNPL/installment flows without deterministic dispute owner.<br>
+              <strong style="color:var(--gold-dim);">R111:</strong> PCI/FRA Data Contamination — detects cross-environment merging of regulated data.<br>
+              <span style="color:var(--alabaster-faint);">Also: R104–R108 cover CBDC ledger manipulation, SWIFT/ISO 20022, FIX protocol, front-running, and reserve key leaks.</span>
+            </span>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">200</div>
+          <div class="stat-label"><span class="en">Free Credits</span><span class="ar" style="display:none;">رصيد مجاني</span></div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">Beta</div>
+          <div class="stat-label"><span class="en">Closed Access</span><span class="ar" style="display:none;">وصول مغلق</span></div>
+        </div>
+      </div>
+
+      <div class="verdicts">
+        <span class="verdict v-allow">✅ ALLOW</span>
+        <span class="verdict v-warn">⚠️ WARN</span>
+        <span class="verdict v-review">🔵 REVIEW</span>
+        <span class="verdict v-block">🚫 BLOCK</span>
+      </div>
+
+      <a href="https://t.me/Elmahrosapi" target="_blank" rel="noopener noreferrer" class="btn btn-cta"><span class="en">Request Beta Access →</span><span class="ar" style="display:none;">اطلب وصول بيتا →</span></a>
+      <p style="margin-top:0.6rem;font-family:var(--font-m);font-size:0.65rem;">
+        <span style="display:inline-flex;align-items:center;gap:5px;color:var(--green);"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;"></span><span class="en">Currently Accepting New Testers</span><span class="ar" style="display:none;">نقبل حالياً مختبرين جدد</span></span>
+      </p>
+      <style>@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }</style>
+      <p style="margin-top:0.75rem;font-family:var(--font-m);font-size:0.6rem;color:var(--alabaster-dim);">
+        <span class="en">Built by <strong style="color:var(--alabaster);">Elmahrosa International</strong> · Claude Partner Network (CPN) Registered Member</span>
+        <span class="ar" style="display:none;">بُني بواسطة <strong style="color:var(--alabaster);">إلماحروسا إنترناشيونال</strong> · عضو مسجل في شبكة كلود بارتنر (CPN)</span>
+      </p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 2: WHAT CAN TEOS SENTINEL SCAN? -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" id="scan-types" style="padding:1.75rem 1.5rem;text-align:center;">
+      <div class="section-label"><span class="en">What Can You Test?</span><span class="ar" style="display:none;">ماذا يمكنك اختباره؟</span></div>
+      <h2 style="margin-bottom:1rem;"><span class="en">What Can TEOS Sentinel Scan?</span><span class="ar" style="display:none;">ماذا يمكن لـ TEOS فحصه؟</span></h2>
+      <div class="features-grid" style="margin-bottom:0;">
+        <div class="feature-card" style="text-align:center;padding:1rem 0.75rem;">
+          <div style="font-size:1.5rem;margin-bottom:0.25rem;">💻</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0;">Source Code</h3>
+          <p style="font-size:0.7rem;">Commands, scripts, and code snippets</p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1rem 0.75rem;">
+          <div style="font-size:1.5rem;margin-bottom:0.25rem;">📦</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0;">GitHub Repositories</h3>
+          <p style="font-size:0.7rem;">Full repos, branches, and single files</p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1rem 0.75rem;">
+          <div style="font-size:1.5rem;margin-bottom:0.25rem;">📋</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0;">Dependencies</h3>
+          <p style="font-size:0.7rem;">npm, pip, and package manifests</p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1rem 0.75rem;">
+          <div style="font-size:1.5rem;margin-bottom:0.25rem;">🔧</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0;">CI/CD Pipelines</h3>
+          <p style="font-size:0.7rem;">Workflow files and deployment scripts</p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1rem 0.75rem;">
+          <div style="font-size:1.5rem;margin-bottom:0.25rem;">🤖</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0;">Agent Actions</h3>
+          <p style="font-size:0.7rem;">AI tool calls and autonomous agent output</p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1rem 0.75rem;">
+          <div style="font-size:1.5rem;margin-bottom:0.25rem;">🔗</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0;">Smart Contract Projects</h3>
+          <p style="font-size:0.7rem;">Solana programs and EVM contracts</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 3: LAUNCH VIDEO -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" style="text-align:center; padding:1.5rem;">
+      <div style="display:inline-block; border:1px solid var(--border-2); box-shadow: var(--gold-glow); background: var(--kohl-mid); border-radius:12px; overflow:hidden;">
+        <iframe src="https://www.youtube.com/embed/rQYcpJ77DV0" title="TEOS Sentinel Shield Preview" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block; width:280px; height:500px; border:none;"></iframe>
+      </div>
+      <p style="margin-top:0.75rem; font-family:var(--font-m); font-size:0.7rem; color:var(--alabaster-dim);"><span class="en">Product Preview</span><span class="ar" style="display:none;">معاينة المنتج</span></p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 3: BETA TESTING PROGRAM -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" id="beta">
+      <div class="section-label"><span class="en">Beta Testing Program</span><span class="ar" style="display:none;">برنامج اختبار بيتا</span></div>
+      <h2><span class="en">How to Become a Tester</span><span class="ar" style="display:none;">كيف تصبح مختبراً</span></h2>
+      <p class="section-sub"><span class="en">200 free credits per tester. Program ends June 30, 2026.</span><span class="ar" style="display:none;">200 رصيد مجاني لكل مختبر. ينتهي البرنامج في 30 يونيو 2026.</span></p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-content">
+            <div class="flow-title"><span class="en">Request Beta Access</span><span class="ar" style="display:none;">اطلب وصول بيتا</span></div>
+            <div class="flow-desc"><span class="en">Click the button above to request access. You will receive a deep-link that activates your tester account with 200 free credits.</span><span class="ar" style="display:none;">اضغط الزر أعلاه لطلب الوصول. ستحصل على رابط تفعيل يمنحك 200 رصيد مجاني.</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-content">
+            <div class="flow-title"><span class="en">Join the Telegram Community</span><span class="ar" style="display:none;">انضم لمجتمع تيليجرام</span></div>
+            <div class="flow-desc"><span class="en">Our Telegram group provides support, announcements, and tester discussion. This is where you receive your personal activation deep-link.</span><span class="ar" style="display:none;">مجموعتنا على تيليجرام توفر الدعم والإعلانات ونقاشات المختبرين. هنا تستلم رابط التفعيل الشخصي.</span></div>
+            <div style="margin-top:0.5rem;"><a href="https://t.me/Elmahrosapi" target="_blank" rel="noopener noreferrer" class="btn btn-sm"><span class="en">Join Community →</span><span class="ar" style="display:none;">انضم للمجتمع →</span></a></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-content">
+            <div class="flow-title"><span class="en">Activate @teoslinker_bot</span><span class="ar" style="display:none;">فعّل البوت</span></div>
+            <div class="flow-desc"><span class="en">Click your deep-link → opens @teoslinker_bot → 200 credits applied instantly. The bot is your scanning interface.</span><span class="ar" style="display:none;">اضغط رابطك → يفتح البوت → 200 رصيد تُضاف فوراً. البوت هو واجهة الفحص الخاصة بك.</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-content">
+            <div class="flow-title"><span class="en">Run Scans</span><span class="ar" style="display:none;">شغّل الفحوصات</span></div>
+            <div class="flow-desc"><span class="en">Use /scan, /deps, /ci, /github, /report to test code, repos, dependencies, and CI/CD. Receive verdicts: ALLOW / WARN / REVIEW / BLOCK.</span><span class="ar" style="display:none;">استخدم الأوامر لفحص الكود والمستودعات والتبعيات. احصل على قرارات الفحص.</span></div>
+          </div>
+        </div>
+        <div class="flow-step" style="opacity:0.7;">
+          <div class="flow-num" style="background:transparent;border:1px dashed var(--gold-dim);">5</div>
+          <div class="flow-content">
+            <div class="flow-title"><span class="en">Submit Feedback (Optional)</span><span class="ar" style="display:none;">أرسل ملاحظاتك (اختياري)</span></div>
+            <div class="flow-desc"><span class="en">Send screenshots or screen recordings of your scan results to info@elmahrosa.com. Quality submissions unlock the CCAF learning pathway.</span><span class="ar" style="display:none;">أرسل صوراً أو فيديو من نتائج الفحص. الجودة تؤهلك لمسار CCAF التعليمي.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep">
+      <div style="text-align:center;">
+        <p style="font-family:var(--font-m);font-size:0.72rem;color:var(--gold);margin-bottom:0.3rem;"><span class="en">CCAF Learning Pathway</span><span class="ar" style="display:none;">مسار CCAF التعليمي</span></p>
+        <p style="font-size:0.8rem;color:var(--alabaster-dim);max-width:600px;margin:0 auto 0.75rem;"><span class="en">Approved reporters receive: work email (@sentinel.teosegypt.com), CPN Hub access, 4 AI security learning paths, and CCAF assessment (fee covered by Elmahrosa).</span><span class="ar" style="display:none;">المختبرون المعتمدون: بريد العمل، وصول مركز CPN، 4 مسارات تعليمية لأمن الذكاء الاصطناعي، وتقييم CCAF (الرسوم مغطاة).</span></p>
+        <div class="sub-grid" style="max-width:640px;margin:0 auto 0.75rem;">
+          <div class="sub-card">
+            <div class="sub-card-label">Path 1</div>
+            <div class="sub-card-text"><span class="en">AI Security Fundamentals</span><span class="ar" style="display:none;">أساسيات أمن الذكاء الاصطناعي</span></div>
+          </div>
+          <div class="sub-card">
+            <div class="sub-card-label">Path 2</div>
+            <div class="sub-card-text"><span class="en">Agent Execution Governance</span><span class="ar" style="display:none;">حوكمة تنفيذ الوكلاء</span></div>
+          </div>
+          <div class="sub-card">
+            <div class="sub-card-label">Path 3</div>
+            <div class="sub-card-text"><span class="en">Security Audit & Reporting</span><span class="ar" style="display:none;">التدقيق الأمني والتقارير</span></div>
+          </div>
+          <div class="sub-card">
+            <div class="sub-card-label">Path 4</div>
+            <div class="sub-card-text"><span class="en">Enterprise Deployment</span><span class="ar" style="display:none;">النشر المؤسسي</span></div>
+          </div>
+        </div>
+        <p style="font-family:var(--font-m);font-size:0.6rem;color:var(--alabaster-dim);"><span class="en">Submit to:</span> <a href="mailto:info@elmahrosa.com" style="color:var(--alabaster);">info@elmahrosa.com</a> · <a href="mailto:ayman@elmahrosa.org" style="color:var(--alabaster);">ayman@elmahrosa.org</a></p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 4: WHAT HAPPENS AFTER BETA? -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" id="after-beta">
+      <div class="section-label"><span class="en">What Happens After Beta?</span><span class="ar" style="display:none;">ماذا بعد بيتا؟</span></div>
+      <h2><span class="en">General Availability (GA) Roadmap</span><span class="ar" style="display:none;">خريطة الطريق للإصدار العام</span></h2>
+      <p class="section-sub"><span class="en">Beta runs until June 30, 2026. Here is what comes next.</span><span class="ar" style="display:none;">تجربة بيتا مستمرة حتى 30 يونيو 2026. إليكم ما يلي.</span></p>
+
+      <div class="features-grid">
+        <div class="feature-card" style="text-align:center;padding:1.25rem 0.75rem;">
+          <div style="font-size:1.3rem;margin-bottom:0.25rem;">🚀</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0.25rem;"><span class="en">General Availability</span><span class="ar" style="display:none;">الإصدار العام</span></h3>
+          <p style="font-size:0.7rem;"><span class="en">Full product launch with commercial plans, expanded platform capabilities, and self-service onboarding. Pricing and tier details announced at GA.</span><span class="ar" style="display:none;">إطلاق كامل بخطط تجارية وإمكانيات موسعة. التفاصيل عند الإطلاق.</span></p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1.25rem 0.75rem;">
+          <div style="font-size:1.3rem;margin-bottom:0.25rem;">📈</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0.25rem;"><span class="en">Expanded Capabilities</span><span class="ar" style="display:none;">قدرات موسعة</span></h3>
+          <p style="font-size:0.7rem;"><span class="en">Advanced Solana and EVM rules, encoded payload detection, multi-stage attack chains, and policy-as-code rule definitions.</span><span class="ar" style="display:none;">قواعد متقدمة لسولانا وإيفيوم، كشف الحمولات المشفرة، سياسات مخصصة.</span></p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1.25rem 0.75rem;">
+          <div style="font-size:1.3rem;margin-bottom:0.25rem;">💼</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0.25rem;"><span class="en">Commercial Plans</span><span class="ar" style="display:none;">الخطط التجارية</span></h3>
+          <p style="font-size:0.7rem;"><span class="en">PRO (1,000cr/mo), TEAM (10,000cr/mo), and Enterprise tiers with priority support, SSO/SAML, and on-prem deployment options.</span><span class="ar" style="display:none;">خطط PRO وTEAM وEnterprise مع دعم ذي أولوية ونشر محلي.</span></p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1.25rem 0.75rem;">
+          <div style="font-size:1.3rem;margin-bottom:0.25rem;">🏢</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0.25rem;"><span class="en">Enterprise Features</span><span class="ar" style="display:none;">ميزات المؤسسات</span></h3>
+          <p style="font-size:0.7rem;"><span class="en">Cryptographic audit chain, multi-party approval workflows, SIEM-compatible export, and air-gapped deployment for regulated environments.</span><span class="ar" style="display:none;">سلسلة تدقيق مشفرة، موافقات متعددة الأطراف، تصدير SIEM، نشر معزول.</span></p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1.25rem 0.75rem;">
+          <div style="font-size:1.3rem;margin-bottom:0.25rem;">⭐</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0.25rem;"><span class="en">Priority Migration</span><span class="ar" style="display:none;">ترحيل ذو أولوية</span></h3>
+          <p style="font-size:0.7rem;"><span class="en">Beta testers and Founder's Offer (FO) holders migrate first at GA launch with preserved credits and grandfathered pricing.</span><span class="ar" style="display:none;">المختبرون وحاملو FO ينتقلون أولاً مع الحفاظ على الرصيد والتسعير.</span></p>
+        </div>
+        <div class="feature-card" style="text-align:center;padding:1.25rem 0.75rem;">
+          <div style="font-size:1.3rem;margin-bottom:0.25rem;">📋</div>
+          <h3 style="font-size:0.8rem;margin-bottom:0.25rem;"><span class="en">Trust Center</span><span class="ar" style="display:none;">مركز الثقة</span></h3>
+          <p style="font-size:0.7rem;"><span class="en">Vulnerability reporting, compliance documentation, responsible AI framework, and enterprise deployment guides at elmahrosa.org/trust.</span><span class="ar" style="display:none;">الإبلاغ عن الثغرات، وثائق الامتثال، أطر الذكاء الاصطناعي المسؤول، أدلة النشر.</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 5: CORE TEAM RECRUITMENT -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" id="careers">
+      <div class="section-label"><span class="en">Core Team Recruitment</span><span class="ar" style="display:none;">توظيف الفريق الأساسي</span></div>
+      <h2><span class="en">MENA AI Security Core Team — 10 Roles</span><span class="ar" style="display:none;">فريق أمن الذكاء الاصطناعي — 10 أدوار</span></h2>
+      <p class="section-sub"><span class="en">Not hiring employees — building a team that works, earns, and grows together. Remote-first · MENA & Africa · Arabic & English welcome.</span><span class="ar" style="display:none;">لا نوظف موظفين — نبني فريقاً يعمل ويكسب وينمو معاً. عن بُعد · الشرق الأوسط وأفريقيا.</span></p>
+      <div class="sub-grid">
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">1</span> <span class="sub-card-text en">AI Security Engineer</span><span class="sub-card-text ar" style="display:none;">مهندس أمن الذكاء الاصطناعي</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">2</span> <span class="sub-card-text en">Python / FastAPI Dev</span><span class="sub-card-text ar" style="display:none;">مطور بايثون</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">3</span> <span class="sub-card-text en">Claude API Specialist</span><span class="sub-card-text ar" style="display:none;">متخصص واجهة كلود</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">4</span> <span class="sub-card-text en">MCP Engineer</span><span class="sub-card-text ar" style="display:none;">مهندس MCP</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">5</span> <span class="sub-card-text en">QA & Security Tester</span><span class="sub-card-text ar" style="display:none;">مختبر الجودة والأمن</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">6</span> <span class="sub-card-text en">Report Analyst</span><span class="sub-card-text ar" style="display:none;">محلل التقارير</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">7</span> <span class="sub-card-text en">DevOps / Railway Eng</span><span class="sub-card-text ar" style="display:none;">مهندس DevOps</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">8</span> <span class="sub-card-text en">Sales & Partnerships</span><span class="sub-card-text ar" style="display:none;">المبيعات والشراكات</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">9</span> <span class="sub-card-text en">Telegram Bot Dev</span><span class="sub-card-text ar" style="display:none;">مطور بوت تيليجرام</span></div>
+        <div class="sub-card"><span style="color:var(--gold);font-family:var(--font-m);font-size:0.55rem;">10</span> <span class="sub-card-text en">Technical Writer</span><span class="sub-card-text ar" style="display:none;">كاتب تقني</span></div>
+      </div>
+      <div style="text-align:left;margin-bottom:0.75rem;">
+        <p style="font-family:var(--font-m);font-size:0.6rem;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem;"><span class="en">5 Steps to Join</span><span class="ar" style="text-transform:none;font-size:1.1rem;">5 خطوات للانضمام</span></p>
+        <p style="font-family:var(--font-m);font-size:0.65rem;color:var(--alabaster-dim);margin-bottom:0.25rem;"><strong style="color:var(--alabaster);">1.</strong> <span class="en">Test TEOS Sentinel → submit scan report with screenshots</span><span class="ar" style="display:none;">اختبر → أرسل تقرير فحص بالصور</span></p>
+        <p style="font-family:var(--font-m);font-size:0.65rem;color:var(--alabaster-dim);margin-bottom:0.25rem;"><strong style="color:var(--alabaster);">2.</strong> <span class="en">Report reviewed and approved by Elmahrosa</span><span class="ar" style="display:none;">مراجعة التقرير والموافقة</span></p>
+        <p style="font-family:var(--font-m);font-size:0.65rem;color:var(--alabaster-dim);margin-bottom:0.25rem;"><strong style="color:var(--alabaster);">3.</strong> <span class="en">Work email (@sentinel.teosegypt.com) + CPN Hub access</span><span class="ar" style="display:none;">بريد عمل + وصول لمركز CPN</span></p>
+        <p style="font-family:var(--font-m);font-size:0.65rem;color:var(--alabaster-dim);margin-bottom:0.25rem;"><strong style="color:var(--alabaster);">4.</strong> <span class="en">Complete 4 AI security learning paths (approximately 3 days)</span><span class="ar" style="display:none;">أكمل 4 مسارات تعليمية لأمن الذكاء الاصطناعي (حوالي 3 أيام)</span></p>
+        <p style="font-family:var(--font-m);font-size:0.65rem;color:var(--alabaster-dim);margin-bottom:0.25rem;"><strong style="color:var(--alabaster);">5.</strong> <span class="en">Pass CCAF exam → sign 6-month contract (exam fee covered by Elmahrosa)</span><span class="ar" style="display:none;">اجتز امتحان CCAF → وقّع عقد 6 أشهر (الرسوم مغطاة)</span></p>
+      </div>
+      <p style="margin-bottom:0.5rem;font-family:var(--font-m);font-size:0.6rem;color:var(--turquoise);"><span class="en">💰 Work-and-earn · Billable projects · Revenue share · CCAF fee covered · EGD2026 speaker role</span><span class="ar" style="display:none;">💰 اعمل واكسب · مشاريع بأجر · مشاركة الأرباح · رسوم CCAF مغطاة · متحدث في EGD2026</span></p>
+      <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+        <a href="https://x.com/KING_TEOS/status/2068506848429330827" target="_blank" rel="noopener noreferrer" class="btn btn-sm"><span class="en">Read Full Post →</span><span class="ar" style="display:none;">اقرأ المنشور →</span></a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 6: PARTNERSHIPS & COMMUNITY -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" id="partnerships">
+      <div class="section-label"><span class="en">Partnerships & Community</span><span class="ar" style="display:none;">الشراكات والمجتمع</span></div>
+      <h2><span class="en">Join the Ecosystem</span><span class="ar" style="display:none;">انضم إلى المنظومة</span></h2>
+      <p class="section-sub"><span class="en">TEOS Sentinel Shield is built by Elmahrosa International. We partner with security researchers, AI audit firms, and enterprise deployment teams.</span><span class="ar" style="display:none;">تيوس ستنينل شيلد مبني من قبل إلماحروسا إنترناشيونال. نتعاون مع باحثي الأمن وشركات تدقيق الذكاء الاصطناعي.</span></p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center;">
+        <a href="https://elmahrosa.org/trust" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:transparent;border:1px solid var(--gold-dim);color:var(--gold);"><span class="en">🔒 Trust Center →</span><span class="ar" style="display:none;">🔒 مركز الثقة →</span></a>
+        <a href="https://elmahrosa.org" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:transparent;border:1px solid var(--border-1);color:var(--alabaster-dim);">elmahrosa.org</a>
+        <a href="mailto:info@elmahrosa.com" class="btn btn-sm" style="background:transparent;border:1px solid var(--border-1);color:var(--alabaster-dim);"><span class="en">Contact Partnerships</span><span class="ar" style="display:none;">اتصل بالشراكات</span></a>
+      </div>
+      <div style="margin-top:1rem;text-align:center;font-size:0.75rem;color:var(--alabaster-dim);">
+        <span class="en">Vulnerability reporting · Compliance · Responsible AI · Enterprise deployments</span><span class="ar" style="display:none;">الإبلاغ عن الثغرات · الامتثال · الذكاء الاصطناعي المسؤول · النشر المؤسسي</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 7: PRICING + FO -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="card" id="pricing" style="text-align:center;">
+      <div class="section-label"><span class="en">Founder's Offer — Available Now</span><span class="ar" style="display:none;">عرض المؤسس — متاح الآن</span></div>
+      <h2><span class="en">FO — Founder's Offer</span><span class="ar" style="display:none;">عرض المؤسس</span></h2>
+      <p class="section-sub" style="max-width:500px;margin:0 auto 0.75rem;">
+        <span class="en">Dodo Payments checkout is live inside @teoslinker_bot. Beta buyers can purchase credits at current pricing. Offers accepted until General Availability (GA).</span>
+        <span class="ar" style="display:none;">السداد عبر Dodo Payments متاح داخل البوت. يمكن لمشتري بيتا شراء الرصيد بالسعر الحالي. العروض مقبولة حتى الإصدار العام.</span>
+      </p>
+      <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+        <a href="https://t.me/teoslinker_bot" target="_blank" rel="noopener noreferrer" class="btn"><span class="en">Open Bot →</span><span class="ar" style="display:none;">افتح البوت →</span></a>
+      </div>
+    </div>
+
+    <div class="notice">
+      <span style="color:var(--gold);font-weight:700;">📋 GA Roadmap</span><br>
+      <span class="en">See the <a href="#after-beta" style="color:var(--alabaster);">What Happens After Beta?</a> section above for full GA details — expanded capabilities, commercial plans, enterprise features, and priority migration for beta testers and FO holders.</span>
+      <span class="ar" style="display:none;">راجع قسم ماذا بعد بيتا أعلاه لتفاصيل الإصدار العام — الإمكانيات الموسعة والخطط التجارية والميزات المؤسسية.</span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SECTION 8: PLATFORM FEATURES (what works today) -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3><span class="en">Deterministic Rules</span><span class="ar" style="display:none;">قواعد حتمية</span></h3>
+        <p><span class="en">111 named rules across 4 categories (64 core + 29 Solana + 10 EVM + 8 banking). Same input always produces the same verdict.</span><span class="ar" style="display:none;">111 قاعدة عبر 4 فئات. نفس الإدخال يعطي نفس القرار دائماً.</span></p>
+      </div>
+      <div class="feature-card">
+        <h3><span class="en">Heuristic Detection</span><span class="ar" style="display:none;">كشف استقرائي</span></h3>
+        <p><span class="en">77 suspicion patterns across 7 signal families. Scores unknown threats 0–100. Catches what deterministic rules miss.</span><span class="ar" style="display:none;">77 نمط اشتباه عبر 7 عائلات. يسجل التهديدات غير المعروفة 0–100.</span></p>
+      </div>
+      <div class="feature-card">
+        <h3><span class="en">Audit Trail</span><span class="ar" style="display:none;">سجل التدقيق</span></h3>
+        <p><span class="en">Every scan decision is logged with timestamp, verdict, score, and reasons. Tamper-evident structured log. Export-ready.</span><span class="ar" style="display:none;">كل قرار فحص يُسجل مع الوقت والنتيجة والدرجة والأسباب. جاهز للتصدير.</span></p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- FOOTER -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <footer>
+      <p style="font-family:var(--font-m); font-size:0.55rem; color:var(--gold); margin-bottom:0.3rem;"><span class="en">Elmahrosa International · Claude Partner Network (CPN) — Registered Member</span><span class="ar" style="display:none;">إلماحروسا إنترناشيونال · شبكة كلود بارتنر (CPN) — عضو مسجل</span></p>
+      <p style="font-family:var(--font-m); font-size:0.5rem; color:var(--gold); margin-bottom:0.3rem;">
+        <span class="en">Tools: <a href="downloads/teos.js" download style="color:var(--alabaster-dim);text-decoration:none;">CLI</a> · <a href="downloads/teos-desktop.zip" download style="color:var(--alabaster-dim);text-decoration:none;">Desktop</a> · <a href="downloads/teos-browser-ext.zip" download style="color:var(--alabaster-dim);text-decoration:none;">Browser Ext</a> · <a href="downloads/teos-vscode-ext.vsix" download style="color:var(--alabaster-dim);text-decoration:none;">VS Code Ext</a></span>
+        <span class="ar" style="display:none;">الأدوات: <a href="downloads/teos.js" download style="color:var(--alabaster-dim);text-decoration:none;">CLI</a> · <a href="downloads/teos-desktop.zip" download style="color:var(--alabaster-dim);text-decoration:none;">تطبيق سطح المكتب</a> · <a href="downloads/teos-browser-ext.zip" download style="color:var(--alabaster-dim);text-decoration:none;">إضافة المتصفح</a> · <a href="downloads/teos-vscode-ext.vsix" download style="color:var(--alabaster-dim);text-decoration:none;">إضافة VS Code</a></span>
+      </p>
+      <p>&copy; 2026 TEOS Sentinel Shield · <span class="en">Built in Alexandria, Egypt</span><span class="ar" style="display:none;">صُنع في الإسكندرية، مصر</span></p>
+      <p style="margin-top: 0.3rem;"><a href="https://elmahrosa.org/trust" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;"><span class="en">Trust Center</span><span class="ar" style="display:none;">مركز الثقة</span></a> · <a href="https://elmahrosa.org" target="_blank" rel="noopener noreferrer" style="color:var(--alabaster-dim);text-decoration:none;">elmahrosa.org</a> · teosegypt.com</p>
+    </footer>
+  </div>
+  <script>
+    (function(){
+      var isAr = false;
+      var btn = document.getElementById('lang-toggle');
+      var ens = document.querySelectorAll('.en');
+      var ars = document.querySelectorAll('.ar');
+      function update(){
+        if (isAr) {
+          document.documentElement.lang = 'ar';
+          document.documentElement.dir = 'rtl';
+          btn.innerHTML = 'AR | <span style="color:var(--gold);">EN</span>';
+        } else {
+          document.documentElement.lang = 'en';
+          document.documentElement.dir = 'ltr';
+          btn.innerHTML = '<span style="color:var(--gold);">AR</span> | EN';
+        }
+        ens.forEach(function(el){ el.style.display = isAr ? 'none' : ''; });
+        ars.forEach(function(el){ el.style.display = isAr ? '' : 'none'; });
+      }
+      btn.onclick = function(){ isAr = !isAr; update(); };
+      update();
+    })();
+  </script>
+</body>
+</html>

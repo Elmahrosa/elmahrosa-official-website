@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TEOS Sentinel Shield — Government Security Scan Portal. Paste code or GitHub URL for instant AI security analysis.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://agent-code-risk-mcp-production-b97d.up.railway.app; img-src 'self' data:;">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>TEOS Sentinel Shield — Government Security Scan</title>
+  <style>
+    :root {
+      --kohl: #04030a; --kohl-mid: #07060f; --kohl-card: #0d0b18; --kohl-card-hi: #13112a;
+      --border-1: #1a1730; --border-2: #251f45;
+      --gold: #c9981e; --gold-dim: #7a5c10; --gold-glow: rgba(201,152,30,0.15);
+      --turquoise: #00b090; --red: #ff1744; --blue: #2979ff; --amber: #ffab00; --green: #00c853;
+      --alabaster: #ece6d4; --alabaster-dim: #8e8878;
+      --font-d: 'Cinzel', serif; --font-m: 'JetBrains Mono', monospace; --font-b: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--kohl); color: var(--alabaster);
+      font-family: var(--font-b); line-height: 1.6; min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(201,152,30,0.015) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(201,152,30,0.015) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, black, transparent);
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; width: 100%; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; background: rgba(4,3,10,0.85);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-1);
+      position: relative; z-index: 10;
+    }
+    .brand { font-family: var(--font-d); color: var(--gold); font-weight: 700; letter-spacing: 0.08em; text-decoration: none; font-size: 1rem; }
+    .gov-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-m); font-size: 0.5rem; color: var(--alabaster-dim);
+      border: 1px solid var(--border-1); padding: 4px 8px; border-radius: 4px;
+    }
+
+    .card {
+      background: var(--kohl-card); border: 1px solid var(--border-1);
+      border-radius: 16px; padding: 2rem; margin-bottom: 1.25rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+
+    h1 { font-family: var(--font-d); font-size: clamp(1.2rem, 3vw, 1.6rem); text-align: center; margin-bottom: 0.25rem; }
+    .subtitle { text-align: center; font-size: 0.85rem; color: var(--alabaster-dim); margin-bottom: 1.5rem; }
+
+    textarea {
+      width: 100%; min-height: 180px; padding: 1rem;
+      background: var(--kohl-mid); border: 1px solid var(--border-1);
+      border-radius: 10px; color: var(--alabaster); font-family: var(--font-m);
+      font-size: 0.8rem; resize: vertical; outline: none;
+      transition: border-color 0.3s;
+    }
+    textarea:focus { border-color: var(--gold-dim); }
+
+    .input-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0.5rem 0 1rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .input-meta label { font-family: var(--font-m); font-size: 0.6rem; color: var(--alabaster-dim); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: var(--kohl); text-decoration: none; font-family: var(--font-d);
+      font-weight: 700; padding: 0.85rem 2rem; border-radius: 8px;
+      transition: 0.3s; text-transform: uppercase; border: none; cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(201,152,30,0.4); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    #result { display: none; margin-top: 1.5rem; }
+    #result.visible { display: block; }
+
+    .verdict-badge {
+      display: inline-block; font-family: var(--font-m); font-size: 1.1rem;
+      font-weight: 700; padding: 0.5rem 1.5rem; border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .v-allow { background: rgba(0,200,83,0.12); color: var(--green); border: 1px solid var(--green); }
+    .v-warn { background: rgba(255,171,0,0.12); color: var(--amber); border: 1px solid var(--amber); }
+    .v-review { background: rgba(41,121,255,0.12); color: var(--blue); border: 1px solid var(--blue); }
+    .v-block { background: rgba(255,23,68,0.12); color: var(--red); border: 1px solid var(--red); }
+    .v-error { background: rgba(255,23,68,0.08); color: var(--alabaster-dim); border: 1px solid var(--border-1); }
+
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .result-item { background: rgba(255,255,255,0.02); border: 1px solid var(--border-1); border-radius: 8px; padding: 1rem; }
+    .result-label { font-family: var(--font-m); font-size: 0.55rem; color: var(--gold); text-transform: uppercase; margin-bottom: 0.3rem; }
+    .result-value { font-family: var(--font-m); font-size: 0.85rem; color: var(--alabaster); }
+    .result-full { grid-column: 1 / -1; }
+
+    .finding { padding: 0.6rem 0; border-bottom: 1px solid var(--border-1); font-size: 0.78rem; }
+    .finding:last-child { border-bottom: none; }
+    .finding-rule { font-family: var(--font-m); color: var(--gold); font-size: 0.65rem; }
+    .finding-desc { color: var(--alabaster-dim); margin-top: 0.15rem; }
+    .finding-sev { display: inline-block; font-family: var(--font-m); font-size: 0.5rem; padding: 2px 6px; border-radius: 3px; margin-right: 0.4rem; }
+
+    .sev-critical { background: rgba(255,23,68,0.15); color: var(--red); }
+    .sev-high { background: rgba(255,171,0,0.15); color: var(--amber); }
+    .sev-medium { background: rgba(41,121,255,0.15); color: var(--blue); }
+    .sev-low { background: rgba(0,200,83,0.12); color: var(--green); }
+
+    .loading { text-align: center; padding: 2rem; display: none; }
+    .loading.visible { display: block; }
+    .spinner {
+      width: 32px; height: 32px; border: 2px solid var(--border-1);
+      border-top-color: var(--gold); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    .error-box {
+      background: rgba(255,23,68,0.06); border: 1px solid rgba(255,23,68,0.3);
+      border-radius: 8px; padding: 1rem; text-align: center;
+      font-family: var(--font-m); font-size: 0.7rem; color: var(--alabaster-dim);
+      margin-top: 1rem;
+    }
+    .error-box strong { color: var(--red); }
+
+    footer {
+      text-align: center; padding: 2rem 1.5rem 1.5rem;
+      font-family: var(--font-m); font-size: 0.6rem; color: var(--alabaster-dim);
+      margin-top: auto; position: relative; z-index: 1;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    .tagline { font-family: var(--font-m); font-size: 0.55rem; color: var(--alabaster-dim); margin-bottom: 0.3rem; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0.75rem 1rem; }
+      .card { padding: 1.25rem; }
+      .result-grid { grid-template-columns: 1fr; }
+      textarea { min-height: 140px; font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="https://sentinel.teosegypt.com" target="_blank" rel="noopener noreferrer" class="brand">𓂀 TEOS SENTINEL SHIELD</a>
+    <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+      <span class="gov-badge">🇺🇬 Government Pilot</span>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="card">
+      <p class="tagline" style="text-align:center;">Elmahrosa International · Claude Partner Network (CPN) Registered Member</p>
+      <h1>Government Security Scan Portal</h1>
+      <p class="subtitle">Paste code, a GitHub URL, or a Solidity/Solana contract below. TEOS Sentinel scans it against 103 rules and returns a verdict within seconds.</p>
+
+      <textarea id="codeInput" placeholder="Paste your code, script, Solidity contract, or GitHub repository URL here..."></textarea>
+
+      <div class="input-meta">
+        <label><span id="charCount">0</span> characters · <span id="lineCount">0</span> lines</label>
+        <button class="btn" id="scanBtn">Scan Code →</button>
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p style="font-family:var(--font-m);font-size:0.7rem;color:var(--alabaster-dim);">Running 103 security rules + heuristic analysis...</p>
+      </div>
+
+      <div id="result">
+        <div style="text-align:center;margin-bottom:0.5rem;">
+          <div class="verdict-badge" id="verdictBadge">—</div>
+        </div>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-label">Risk Score</div>
+            <div class="result-value" id="riskScore">—</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Findings</div>
+            <div class="result-value" id="findingsCount">—</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Scan ID</div>
+            <div class="result-value" id="scanId" style="font-size:0.65rem;">—</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Timestamp</div>
+            <div class="result-value" id="scanTime" style="font-size:0.65rem;">—</div>
+          </div>
+        </div>
+        <div class="result-item" style="margin-bottom:0.75rem;">
+          <div class="result-label">Findings</div>
+          <div id="findingsList"></div>
+        </div>
+        <div style="text-align:center;">
+          <button class="btn" id="newScanBtn" style="font-size:0.65rem;padding:0.6rem 1.5rem;">Scan Another →</button>
+        </div>
+      </div>
+
+      <div class="error-box" id="errorBox" style="display:none;">
+        <strong>Scan Failed</strong><br>
+        <span id="errorMsg">An unexpected error occurred. Please try again.</span>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p style="margin-bottom:0.3rem;">TEOS Sentinel Shield — Execution Firewall for Autonomous AI Agents</p>
+    <p>&copy; 2026 Elmahrosa International · <a href="https://sentinel.teosegypt.com" target="_blank" rel="noopener noreferrer">sentinel.teosegypt.com</a> · <a href="https://elmahrosa.org/trust" target="_blank" rel="noopener noreferrer">Trust Center</a></p>
+  </footer>
+  <script>
+    (function() {
+      var SCAN_API = 'https://agent-code-risk-mcp-production-b97d.up.railway.app/scan';
+      var GOV_API_KEY = 'uganda-gov-pilot-2026';
+      var DAILY_LIMIT = 50;
+
+      var codeInput = document.getElementById('codeInput');
+      var scanBtn = document.getElementById('scanBtn');
+      var newScanBtn = document.getElementById('newScanBtn');
+      var loading = document.getElementById('loading');
+      var result = document.getElementById('result');
+      var errorBox = document.getElementById('errorBox');
+      var errorMsg = document.getElementById('errorMsg');
+      var verdictBadge = document.getElementById('verdictBadge');
+      var riskScore = document.getElementById('riskScore');
+      var findingsCount = document.getElementById('findingsCount');
+      var scanId = document.getElementById('scanId');
+      var scanTime = document.getElementById('scanTime');
+      var findingsList = document.getElementById('findingsList');
+      var charCount = document.getElementById('charCount');
+
+      function getToday() { return new Date().toISOString().slice(0,10); }
+
+      function getScanCount() {
+        try {
+          var data = JSON.parse(localStorage.getItem('gov_scan_log') || '{}');
+          var today = getToday();
+          return data.date === today ? data.count : 0;
+        } catch(e) { return 0; }
+      }
+
+      function incrementScanCount() {
+        try {
+          var data = { date: getToday(), count: getScanCount() + 1 };
+          localStorage.setItem('gov_scan_log', JSON.stringify(data));
+        } catch(e) {}
+      }
+
+      function isRateLimited() {
+        var c = getScanCount();
+        if (c >= DAILY_LIMIT) {
+          showError('Daily scan limit reached (' + DAILY_LIMIT + ' scans). Try again tomorrow.');
+          return true;
+        }
+        return false;
+      }
+
+      function countLines(t) { return t ? t.split('\n').length : 0; }
+
+      codeInput.addEventListener('input', function() {
+        charCount.textContent = codeInput.value.length;
+        document.getElementById('lineCount').textContent = countLines(codeInput.value);
+      });
+
+      function showLoading() {
+        loading.classList.add('visible');
+        result.classList.remove('visible');
+        errorBox.style.display = 'none';
+        scanBtn.disabled = true;
+      }
+
+      function hideLoading() {
+        loading.classList.remove('visible');
+        scanBtn.disabled = false;
+      }
+
+      function showError(msg) {
+        errorMsg.textContent = msg;
+        errorBox.style.display = 'block';
+        hideLoading();
+      }
+
+      function resetView() {
+        result.classList.remove('visible');
+        errorBox.style.display = 'none';
+        hideLoading();
+      }
+
+      function setVerdict(v) {
+        verdictBadge.textContent = v;
+        verdictBadge.className = 'verdict-badge';
+        var cls = 'v-';
+        if (v === 'ALLOW') cls += 'allow';
+        else if (v === 'WARN') cls += 'warn';
+        else if (v === 'REVIEW') cls += 'review';
+        else if (v === 'BLOCK') cls += 'block';
+        else { cls += 'error'; verdictBadge.textContent = 'SCAN ERROR'; }
+        verdictBadge.classList.add(cls);
+      }
+
+      function displayResult(data) {
+        setVerdict(data.verdict || 'ERROR');
+        var score = typeof data.score === 'number' ? data.score :
+                    typeof data.risk_score === 'number' ? data.risk_score : '—';
+        riskScore.textContent = score !== '—' ? score + '/100' : '—';
+
+        var findings = data.findings || data.results || [];
+        findingsCount.textContent = findings.length + ' found';
+
+        scanId.textContent = data.scan_id || data.id || data.reference || '—';
+        var ts = data.timestamp || data.scanned_at || new Date().toISOString();
+        scanTime.textContent = new Date(ts).toLocaleString();
+
+        findingsList.innerHTML = '';
+        if (findings.length === 0) {
+          findingsList.innerHTML = '<p style="font-size:0.78rem;color:var(--alabaster-dim);padding:0.5rem 0;">No issues detected.</p>';
+        } else {
+          var maxShow = Math.min(findings.length, 20);
+          for (var i = 0; i < maxShow; i++) {
+            var f = findings[i];
+            var div = document.createElement('div');
+            div.className = 'finding';
+            var rule = f.rule || f.rule_id || f.id || 'R' + (i+1);
+            var sev = (f.severity || f.level || 'info').toLowerCase();
+            var sevClass = 'sev-low';
+            if (sev === 'critical' || sev === 'crit') sevClass = 'sev-critical';
+            else if (sev === 'high') sevClass = 'sev-high';
+            else if (sev === 'medium' || sev === 'med') sevClass = 'sev-medium';
+            var desc = f.description || f.message || f.title || f.reason || '';
+            div.innerHTML = '<span class="finding-sev ' + sevClass + '">' + sev.toUpperCase() + '</span>'
+                          + '<span class="finding-rule">' + rule + '</span>'
+                          + '<div class="finding-desc">' + desc + '</div>';
+            findingsList.appendChild(div);
+          }
+          if (findings.length > maxShow) {
+            var more = document.createElement('p');
+            more.style.cssText = 'font-size:0.7rem;color:var(--alabaster-dim);padding:0.5rem 0;text-align:center;font-family:var(--font-m);';
+            more.textContent = '+ ' + (findings.length - maxShow) + ' more findings not shown';
+            findingsList.appendChild(more);
+          }
+        }
+
+        result.classList.add('visible');
+        hideLoading();
+        incrementScanCount();
+      }
+
+      function doScan() {
+        resetView();
+        var code = codeInput.value.trim();
+        if (!code) { showError('Please paste code or a URL to scan.'); return; }
+        if (code.length > 50000) { showError('Input is too large (max 50,000 characters).'); return; }
+        if (isRateLimited()) return;
+
+        showLoading();
+
+        var payload = {
+          code: code,
+          api_key: GOV_API_KEY
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', SCAN_API, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-Gov-Scan', 'true');
+        xhr.timeout = 45000;
+
+        xhr.onload = function() {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              var data = JSON.parse(xhr.responseText);
+              displayResult(data);
+            } catch(e) {
+              showError('Invalid response from scan engine. Please try again.');
+            }
+          } else {
+            var msg = 'Scan engine returned status ' + xhr.status;
+            try {
+              var errData = JSON.parse(xhr.responseText);
+              if (errData.error || errData.message) msg += ': ' + (errData.error || errData.message);
+            } catch(e) {}
+            showError(msg);
+          }
+        };
+
+        xhr.onerror = function() {
+          showError('Could not reach the scan engine. Check your internet connection and try again.');
+        };
+
+        xhr.ontimeout = function() {
+          showError('Scan timed out after 45 seconds. The code may be too large or complex — try a smaller snippet.');
+        };
+
+        xhr.send(JSON.stringify(payload));
+      }
+
+      scanBtn.addEventListener('click', doScan);
+
+      codeInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          doScan();
+        }
+      });
+
+      newScanBtn.addEventListener('click', function() {
+        resetView();
+        codeInput.value = '';
+        charCount.textContent = '0';
+        document.getElementById('lineCount').textContent = '0';
+        codeInput.focus();
+      });
+
+      charCount.textContent = '0';
+      document.getElementById('lineCount').textContent = '0';
+    })();
+  </script>
+</body>
+</html>

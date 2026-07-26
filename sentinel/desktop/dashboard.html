@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; form-action 'self'; base-uri 'self';">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEOS Sovereign Sentinel | Pre-Execution Runtime Governance</title>
+  <meta name="description" content="TEOS Sovereign Sentinel desktop SOC dashboard — real-time governance monitoring for enterprise AI runtime governance and threat isolation.">
+<style>
+:root {
+  --bg: #000000; --bg2: #0a0a0a; --bg3: #121212; --bg4: #1a1a1a;
+  --border: #1a1a1a; --border2: #2a2a2a;
+  --text: #e0e0e0; --text2: #888; --text3: #555;
+  --orange: #ff8c00; --orange-dim: rgba(255,140,0,0.15);
+  --green: #00ff88; --green-dim: rgba(0,255,136,0.12);
+  --red: #ff3d57; --red-dim: rgba(255,61,87,0.12);
+  --cyan: #00c8ff; --cyan-dim: rgba(0,200,255,0.1);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5}
+::selection{background:var(--orange-dim);color:var(--orange)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--border2)}
+
+/* Top Bar */
+#topbar{height:44px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;z-index:100;-webkit-app-region:drag}
+#topbar button{-webkit-app-region:no-drag}
+.logo{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--orange);letter-spacing:0.04em;display:flex;align-items:center;gap:7px}
+.logo span{width:22px;height:22px;background:var(--orange);color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+.sep{width:1px;height:18px;background:var(--border)}
+.topbar-title{font-size:12px;color:var(--text2);font-weight:500}
+.topbar-title small{color:var(--text3);margin-left:6px;font-size:11px}
+#topbar-tier{font-family:var(--mono);font-size:10px;padding:2px 10px;border-radius:10px;background:var(--bg4);color:var(--text2);margin-left:4px}
+#topbar-credits{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text2);display:flex;align-items:center;gap:8px}
+
+/* Main Layout */
+#shell{display:flex;flex:1;height:calc(100vh - 44px)}
+#sidebar{width:180px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:8px;overflow-y:auto;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--text2);transition:all 0.12s;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--orange-dim);color:var(--orange);font-weight:600}
+.nav-item .ico{width:18px;text-align:center;font-size:14px}
+.nav-sep{height:1px;background:var(--border);margin:6px 8px}
+.nav-bottom{margin-top:auto;padding-top:8px;border-top:1px solid var(--border)}
+
+/* Content */
+#content{flex:1;overflow-y:auto;padding:20px 24px}
+.page{display:none}
+.page.active{display:block}
+h1{font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;font-family:var(--mono)}
+h1 small{font-size:13px;color:var(--text2);font-weight:400;font-family:var(--font);margin-left:8px}
+.sub{color:var(--text2);font-size:13px;margin-bottom:20px}
+h2{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;margin-top:20px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;color:var(--text3)}
+h2:first-child{margin-top:0}
+
+/* Cards */
+.card-grid{display:grid;gap:12px;margin-bottom:16px}
+.card-grid-2{grid-template-columns:1fr 1fr}
+.card-grid-3{grid-template-columns:1fr 1fr 1fr}
+.card-grid-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:16px}
+.card-flat{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px}
+.stat{font-family:var(--mono);font-size:22px;font-weight:700;line-height:1.2}
+.stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-top:2px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:5px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:var(--mono);font-size:12px;cursor:pointer;transition:all 0.12s}
+.btn:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary{background:var(--orange);color:#000;border-color:var(--orange);font-weight:600}
+.btn-primary:hover{background:#ff9f20;border-color:#ff9f20}
+.btn-danger{background:var(--red-dim);color:var(--red);border-color:rgba(255,61,87,0.3)}
+.btn-danger:hover{border-color:var(--red)}
+.btn-sm{padding:5px 12px;font-size:11px}
+.btn-icon{padding:6px 10px;font-size:13px}
+
+/* Inputs */
+textarea.code{width:100%;min-height:140px;background:#000;border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13px;padding:12px;resize:vertical;outline:none;transition:border-color 0.12s;tab-size:2}
+textarea.code:focus{border-color:var(--orange)}
+textarea.code::placeholder{color:var(--text3)}
+input[type=text]{background:#000;border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13px;padding:9px 12px;outline:none;width:100%;transition:border-color 0.12s}
+input[type=text]:focus{border-color:var(--orange)}
+
+/* Result blocks */
+.verdict{font-family:var(--mono);font-size:16px;font-weight:700;padding:14px 18px;border-radius:6px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.v-ALLOW{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,255,136,0.2)}
+.v-WARN{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(255,140,0,0.2)}
+.v-BLOCK{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,61,87,0.2)}
+.v-REVIEW{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,200,255,0.2)}
+.findings{margin-top:8px;font-family:var(--mono);font-size:12px}
+.finding{padding:6px 10px;border-left:2px solid var(--border);margin-bottom:4px;color:var(--text2)}
+.meta-line{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:8px}
+
+/* Service status */
+.svc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:5px;background:var(--bg3);border:1px solid var(--border);margin-bottom:6px}
+.svc .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.svc .dot.up{background:var(--green)}
+.svc .dot.degraded{background:var(--orange)}
+.svc .dot.down{background:var(--red)}
+.svc .name{font-family:var(--mono);font-size:12px;color:var(--text);flex:1}
+.svc .status{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.svc .url{font-size:10px;color:var(--text3);font-family:var(--mono);display:block;margin-top:1px}
+
+/* Links grid */
+.link-card{display:flex;flex-direction:column;gap:4px;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--text);transition:all 0.12s}
+.link-card:hover{border-color:var(--orange)}
+.link-card .lbl{font-weight:600;font-size:13px}
+.link-card .url{font-family:var(--mono);font-size:11px;color:var(--text2)}
+.link-card .desc{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* Log */
+#log-view{background:#000;border:1px solid var(--border);border-radius:5px;padding:12px;font-family:var(--mono);font-size:11px;color:var(--text2);max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+#log-view .l-error{color:var(--red)}
+#log-view .l-warn{color:var(--orange)}
+
+/* Footer */
+.footer-links{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.footer-links a{color:var(--text3);font-size:11px;text-decoration:none;font-family:var(--mono)}
+.footer-links a:hover{color:var(--orange)}
+
+@media(max-width:720px){
+  #sidebar{width:50px}
+  .nav-item span:not(.ico){display:none}
+  .card-grid-2,.card-grid-3,.card-grid-4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div style="background:#0a1628;color:#00e5ff;text-align:center;padding:10px 20px;font-family:'Courier New',monospace;font-size:13px;border-bottom:1px solid #00e5ff33;position:sticky;top:0;z-index:9999">
+  Built in Alexandria, Egypt &nbsp;|&nbsp; 121 Active Governance Controls &nbsp;|&nbsp; Claude Code &amp; MCP Ready &nbsp;|&nbsp; Pre-Execution Policy Enforcement &nbsp;|&nbsp; Banking • FinTech • Sovereign DPI
+</div>
+
+<div id="topbar">
+  <div class="logo"><span>T</span>TEOS SENTINEL</div>
+  <div class="sep"></div>
+  <div class="topbar-title">Desktop <small>v4.0.0</small></div>
+  <span id="topbar-tier"></span>
+  <div id="topbar-credits"></div>
+</div>
+
+<div id="shell">
+  <div id="sidebar">
+    <button class="nav-item active" data-page="scan"><span class="ico">&#9889;</span> <span>Scan</span></button>
+    <button class="nav-item" data-page="status"><span class="ico">&#9679;</span> <span>Status</span></button>
+    <button class="nav-item" data-page="links"><span class="ico">&#128279;</span> <span>Links</span></button>
+    <button class="nav-item" data-page="settings"><span class="ico">&#9881;</span> <span>Settings</span></button>
+    <div class="nav-sep"></div>
+    <div class="nav-bottom">
+      <button class="nav-item" data-page="log"><span class="ico">&#128196;</span> <span>Log</span></button>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- SCAN -->
+    <div class="page active" id="page-scan">
+      <h1>Security Scan <small>analyze code via TEOS risk engine</small></h1>
+      <p class="sub">Enter code or a file path to scan for vulnerabilities, secrets, and malicious patterns.</p>
+      <textarea class="code" id="scan-input" placeholder="Paste code here, or drop a file...&#10;&#10;Examples:&#10;  rm -rf /&#10;  eval(base64_decode($_GET['cmd']))&#10;  function withdraw() { msg.sender.transfer(address(this).balance); }" spellcheck="false"></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+        <button class="btn btn-primary" id="scan-btn">&#9654; Scan</button>
+        <button class="btn" id="scan-clear">Clear</button>
+        <span id="scan-status" style="font-size:12px;color:var(--text3);margin-left:auto;font-family:var(--mono)"></span>
+      </div>
+      <div id="scan-result" style="margin-top:16px"></div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="page" id="page-status">
+      <h1>Service Status <small>live health + account info</small></h1>
+      <p class="sub">Real-time status of all TEOS Sovereign Sentinel services and your account tier.</p>
+      <div class="card-grid card-grid-2">
+        <div class="card"><div class="stat" id="stat-tier">-</div><div class="stat-label">Tier</div></div>
+        <div class="card"><div class="stat" id="stat-credits">-</div><div class="stat-label">Credits</div></div>
+      </div>
+      <h2>Services</h2>
+      <div id="svc-list"></div>
+      <h2>Banking &amp; Financial Governance</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:16px">
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#127973; Banking Operations</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#128179; Payment Infrastructure</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#127963; Digital Banking Platforms</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#128241; FinTech Applications</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#128737; AML Risk Controls</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#128270; Fraud Detection Workflows</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#9888; High-Risk Transaction Monitoring</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#128100; Human Authorization Escalation</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#128203; Regulatory Audit Trails</div>
+        <div class="card" style="text-align:center;padding:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:#c0d0e0">&#9889; Pre-Execution Financial Controls</div>
+      </div>
+
+      <h2>Device</h2>
+      <div class="card-flat" style="font-family:var(--mono);font-size:12px;color:var(--text2)" id="status-device"></div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="page" id="page-links">
+      <h1>Links &amp; Resources</h1>
+      <p class="sub">All TEOS Sovereign Sentinel services, dashboards, and payment links.</p>
+      <div class="card-grid card-grid-2" id="links-grid"></div>
+      <h2>Deployment</h2>
+      <div class="card-flat" style="font-family:var(--mono);font-size:12px;color:var(--text2);line-height:1.8">
+        <div>git push &#8594; GitHub Actions &#8594; Railway auto-deploy</div>
+        <div>Project: 0b0b2a98-5400-4d70-bba6-74f693592479</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <h1>Settings <small>API key &amp; authentication</small></h1>
+      <p class="sub">Configure your TEOS API key for unlimited scans. Get a key from <strong>@teoslinker_bot</strong>.</p>
+      <div class="card-flat" style="max-width:500px">
+        <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:6px;font-weight:600">API Key</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="settings-key-input" placeholder="Enter your TEOS API key..." style="flex:1">
+          <button class="btn btn-primary btn-sm" id="settings-login-btn">Save</button>
+          <button class="btn btn-danger btn-sm" id="settings-logout-btn">Remove</button>
+        </div>
+        <div id="settings-status" style="margin-top:8px;font-size:12px;color:var(--text2);font-family:var(--mono)"></div>
+      </div>
+      <h2>About</h2>
+      <div class="card-flat" style="font-family:var(--mono);font-size:12px;color:var(--text2);line-height:2">
+        <div>TEOS Sovereign Sentinel v4.0.0</div>
+        <div>Engine: 121 Active Governance Controls (64 core + 29 Solana + 10 EVM + 8 Banking + 10 MENA) | 410 Validation Tests</div>
+        <div>Runtime: Railway (production)</div>
+        <div>Pricing may change after beta — early founders locked in.</div>
+      </div>
+    </div>
+
+    <!-- LOG -->
+    <div class="page" id="page-log">
+      <h1>Application Log <small>last 200 lines</small></h1>
+      <p class="sub">Diagnostic log from the desktop app (written to ~/.teos/desktop.log).</p>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn btn-sm" id="log-refresh">&#8635; Refresh</button>
+        <button class="btn btn-sm" id="log-clear">Clear view</button>
+      </div>
+      <div id="log-view">Loading log...</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+const DESKTOP = window.teosDesktop;
+const API = DESKTOP || { onUpdate(){}, getConfig:()=>Promise.resolve({}), login:()=>Promise.resolve({}),
+  logout:()=>Promise.resolve({}), fetchHealth:()=>Promise.resolve({}), runScan:()=>Promise.resolve({}),
+  getLog:()=>Promise.resolve(''), getVersion:()=>Promise.resolve({}) };
+
+const LINKS = [
+  { lbl:'TEOS Bot', url:'https://t.me/teoslinker_bot', desc:'Telegram bot — scan, manage, activate' },
+  { lbl:'Activation Service', url:'https://activation-service-production-4228.up.railway.app', desc:'Credit mgmt, tier info, tester activation' },
+  { lbl:'Risk Engine', url:'https://agent-code-risk-mcp-production-b97d.up.railway.app', desc:'Core scanning engine — 121 Active Governance Controls, v4.0.0' },
+  { lbl:'Sentinel Shield', url:'https://teos-sentinel-shield-production-ef7a.up.railway.app', desc:'Dashboard & API gateway' },
+  { lbl:'Dodo Payments', url:'https://dodopayments.com', desc:'Subscription & payment processing' },
+  { lbl:'Hackathon Portal', url:'https://hackathon.elmahrosa.org', desc:'Hosting renewal & alpha access' },
+  { lbl:'GitHub (Orchestrator)', url:'https://github.com/Elmahrosa/teos-sovereign-security-stack', desc:'Root repo — CLI, Desktop, docs, CI' },
+  { lbl:'Enterprise Docs', url:'https://github.com/Elmahrosa/teos-sovereign-security-stack/blob/main/docs/runbooks', desc:'Runbooks, scaling, monitoring guides' },
+  { lbl:'Command Center', url:'../index.html', desc:'Orchestrator home — CLI, desktop, docs, CI' },
+  { lbl:'SOC Dashboard', url:'../dashboard.html', desc:'Security Operations Center dashboard' },
+  { lbl:'App Hub', url:'../app.html', desc:'Scan banking, app interface, credit gate' },
+  { lbl:'121 Active Governance Controls', url:'../rules.html', desc:'Full rule reference — 121 controls, 410 tests' },
+  { lbl:'Sentinel', url:'../sentinel/index.html', desc:'Sentinel Shield landing page' },
+  { lbl:'Transparency', url:'../transparency.html', desc:'Transparency hub, alpha metrics, bug bounty' },
+  { lbl:'Replay', url:'../replay.html', desc:'Forensic scan replay timeline' },
+  { lbl:'Pitch Deck', url:'../pitch-deck.html', desc:'Investor pitch deck & traction' },
+  { lbl:'Monitoring', url:'../monitoring/dashboard.html', desc:'Executive monitoring dashboard' },
+  { lbl:'Desktop App (this)', url:'../desktop/dashboard.html', desc:'Desktop SOC app (current)' },
+  { lbl:'Browser Ext', url:'../extensions/browser/popup.html', desc:'Chrome/Edge extension popup' },
+];
+
+let currentTier = { tier:'free', credits:0 };
+
+/* Navigation */
+$$('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    $$('.page').forEach(p => p.classList.remove('active'));
+    const page = document.getElementById('page-' + btn.dataset.page);
+    if (page) page.classList.add('active');
+    if (btn.dataset.page === 'status') refreshStatus();
+    if (btn.dataset.page === 'log') refreshLog();
+  });
+});
+
+/* Tab bar tier */
+function updateTopbar(data) {
+  currentTier = data || currentTier;
+  const t = data || currentTier;
+  const tierEl = $('#topbar-tier');
+  const creditsEl = $('#topbar-credits');
+  if (t.tier === 'authenticated' || t.label === 'Authenticated') {
+    tierEl.textContent = 'API Key';
+    tierEl.style.color = 'var(--green)';
+    tierEl.style.background = 'var(--green-dim)';
+    creditsEl.textContent = 'Unlimited';
+  } else if (t.tier) {
+    tierEl.textContent = t.label || t.tier;
+    tierEl.style.color = 'var(--orange)';
+    tierEl.style.background = 'var(--orange-dim)';
+    creditsEl.textContent = t.credits != null ? t.credits + ' cr' : '-';
+  }
+}
+
+/* Real-time updates from main process */
+if (DESKTOP) {
+  DESKTOP.onUpdate(data => {
+    updateTopbar(data.tier);
+    if ($('#page-status').classList.contains('active')) renderServices(data.services);
+  });
+  DESKTOP.getVersion().then(v => {
+    document.querySelector('.topbar-title small').textContent = 'v' + (v.version || '4.0');
+  });
+  DESKTOP.getConfig().then(t => updateTopbar({ tier: t.tier, credits: t.credits, label: t.label || t.tier }));
+}
+
+/* ── SCAN ── */
+
+$('#scan-btn').addEventListener('click', doScan);
+$('#scan-clear').addEventListener('click', () => {
+  $('#scan-input').value = '';
+  $('#scan-result').innerHTML = '';
+  $('#scan-status').textContent = '';
+});
+$('#scan-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.ctrlKey) doScan();
+});
+$('#scan-input').addEventListener('dragover', e => e.preventDefault());
+$('#scan-input').addEventListener('drop', e => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = ev => { $('#scan-input').value = ev.target.result; };
+    reader.readAsText(file);
+  }
+});
+
+async function doScan() {
+  const code = $('#scan-input').value.trim();
+  if (!code) { $('#scan-status').textContent = 'Enter code to scan'; return; }
+
+  const resultEl = $('#scan-result');
+  const statusEl = $('#scan-status');
+  resultEl.innerHTML = '<div style="color:var(--text2);font-family:var(--mono);font-size:12px">Scanning...</div>';
+  statusEl.textContent = 'scanning...';
+  $('#scan-btn').disabled = true;
+
+  try {
+    const data = await API.runScan(code);
+    if (data.error) {
+      resultEl.innerHTML = `<div class="verdict v-BLOCK">&#10060; ${data.error}</div>`;
+      statusEl.textContent = 'error';
+      if (data.error.includes('API key') || data.error.includes('Invalid key')) {
+        resultEl.innerHTML += '<div style="color:var(--text2);font-size:12px;margin-top:6px">Get a key: <a href="#" onclick="switchPage(\'settings\')" style="color:var(--orange)">Settings &#8594;</a></div>';
+      }
+      return;
+    }
+    const v = (data.verdict || 'ALLOW').toUpperCase();
+    const score = data.score ?? 0;
+    const icon = v === 'BLOCK' ? '&#128665;' : v === 'WARN' ? '&#9888;' : v === 'REVIEW' ? '&#128270;' : '&#10004;';
+
+    let html = `<div class="verdict v-${v}">${icon} ${v} (risk: ${score}/100)`;
+
+    if (data._meta) {
+      const m = data._meta;
+      html += ` <span style="font-size:11px;font-weight:400;margin-left:auto">${m.tier} | ${m.creditsRemaining} cr left${m.dailyRemaining != null ? ' | ' + m.dailyRemaining + ' daily' : ''}</span>`;
+    }
+    html += '</div>';
+
+    const findings = data.findings || data.reasons || [];
+    if (findings.length) {
+      html += '<div class="findings">';
+      findings.forEach(f => {
+        const desc = f.description || f.message || f.rule || JSON.stringify(f);
+        html += `<div class="finding">${desc}</div>`;
+      });
+      html += '</div>';
+    }
+
+    if (data.metrics) {
+      html += `<div class="meta-line">${data.metrics.totalRules || '?'} rules evaluated</div>`;
+    }
+
+    resultEl.innerHTML = html;
+    statusEl.textContent = 'complete';
+
+    /* Refresh tier info after scan */
+    if (DESKTOP) DESKTOP.getConfig().then(t => updateTopbar({ tier: t.tier, credits: t.credits, label: t.label || t.tier }));
+  } catch (err) {
+    resultEl.innerHTML = `<div class="verdict v-BLOCK">&#10060; ${err.message}</div>`;
+    statusEl.textContent = 'error';
+  } finally {
+    $('#scan-btn').disabled = false;
+  }
+}
+
+/* ── STATUS ── */
+
+async function refreshStatus() {
+  if (DESKTOP) {
+    const h = await DESKTOP.fetchHealth();
+    renderServices(h);
+    const cfg = await DESKTOP.getConfig();
+    updateTopbar({ tier: cfg.tier, credits: cfg.credits, label: cfg.label || cfg.tier });
+    $('#stat-tier').textContent = cfg.label || cfg.tier || '-';
+    $('#stat-credits').textContent = cfg.credits != null ? cfg.credits : '-';
+    if (cfg.tier === 'free') {
+      $('#stat-credits').textContent = cfg.remaining != null ? cfg.remaining + ' / ' + cfg.total : '5/day';
+    }
+  } else {
+    $('#svc-list').innerHTML = '<div style="color:var(--text3)">Status available when running as Electron app</div>';
+  }
+  $('#status-device').textContent = navigator.userAgent || 'unknown';
+}
+
+function renderServices(services) {
+  if (!services) return;
+  const list = $('#svc-list');
+  let html = '';
+  const order = { bot:'TEOS Bot', activation:'Activation', risk:'Risk Engine', shield:'Sentinel Shield', bridge:'TEOS Bridge' };
+  Object.entries(order).forEach(([key, name]) => {
+    const svc = services[key] || { status:'?' };
+    const cls = (svc.status || '').toLowerCase();
+    html += `<div class="svc"><div class="dot ${cls}"></div><div class="name">${name}</div><div class="status">${svc.status || '?'}</div></div>`;
+  });
+  list.innerHTML = html;
+}
+
+/* ── LINKS ── */
+
+function renderLinks() {
+  const grid = $('#links-grid');
+  grid.innerHTML = LINKS.map(l =>
+    `<a class="link-card" href="${l.url}" target="_blank">
+      <div class="lbl">${l.lbl}</div>
+      <div class="url">${l.url}</div>
+      <div class="desc">${l.desc}</div>
+    </a>`
+  ).join('');
+}
+renderLinks();
+
+/* ── SETTINGS ── */
+
+$('#settings-login-btn').addEventListener('click', async () => {
+  const key = $('#settings-key-input').value.trim();
+  if (!key || key.length < 8) { $('#settings-status').textContent = 'Invalid key (min 8 chars)'; return; }
+  if (DESKTOP) {
+    const r = await DESKTOP.login(key);
+    if (r.ok) {
+      $('#settings-status').textContent = 'API key saved. Unlimited scans.';
+      $('#settings-status').style.color = 'var(--green)';
+      $('#settings-key-input').value = '';
+      const cfg = await DESKTOP.getConfig();
+      updateTopbar({ tier: 'authenticated', credits: 999, label: cfg.label || 'API Key' });
+    } else {
+      $('#settings-status').textContent = r.error || 'Failed to save key';
+      $('#settings-status').style.color = 'var(--red)';
+    }
+  } else {
+    $('#settings-status').textContent = 'Settings available when running as Electron app';
+  }
+});
+
+$('#settings-logout-btn').addEventListener('click', async () => {
+  if (DESKTOP) {
+    await DESKTOP.logout();
+    $('#settings-status').textContent = 'API key removed. Reverted to free tier.';
+    $('#settings-status').style.color = 'var(--orange)';
+    const cfg = await DESKTOP.getConfig();
+    updateTopbar({ tier: cfg.tier, credits: cfg.credits, label: cfg.label || cfg.tier });
+  } else {
+    $('#settings-status').textContent = 'Settings available when running as Electron app';
+  }
+});
+
+/* ── LOG ── */
+
+async function refreshLog() {
+  if (DESKTOP) {
+    const log = await DESKTOP.getLog();
+    const view = $('#log-view');
+    if (!log) { view.textContent = '(empty)'; return; }
+    view.innerHTML = log.split('\n').map(line => {
+      const cls = line.includes('ERROR') || line.includes('error') ? 'l-error'
+        : line.includes('WARN') || line.includes('warn') ? 'l-warn' : '';
+      return `<span class="${cls}">${line.replace(/</g,'&lt;')}</span>\n`;
+    }).join('');
+    view.scrollTop = view.scrollHeight;
+  } else {
+    $('#log-view').textContent = 'Log available when running as Electron app';
+  }
+}
+
+$('#log-refresh').addEventListener('click', refreshLog);
+$('#log-clear').addEventListener('click', () => { $('#log-view').textContent = '(cleared)'; });
+
+/* Helper */
+function switchPage(name) {
+  const btn = document.querySelector(`[data-page="${name}"]`);
+  if (btn) btn.click();
+}
+
+/* Init status on load */
+refreshStatus();
+</script>
+<footer style="text-align:center;padding:16px 20px;color:var(--text3);font-family:var(--mono);font-size:11px;border-top:1px solid var(--border);margin-top:16px">
+  Built in Alexandria, Egypt<br>
+  Engine v4.0.0 · 121 Active Governance Controls · 410 Validation Tests<br>
+  Claude Code · MCP · Enterprise AI Governance
+</footer>
+</body>
+</html>
