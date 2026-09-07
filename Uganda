@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="TEOS Sentinel Shield — Government Security Scan Portal. Paste code or GitHub URL for instant AI security analysis.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://agent-code-risk-mcp-production-b97d.up.railway.app; img-src 'self' data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://agent-code-risk-mcp-production.up.railway.app; img-src 'self' data:;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <title>TEOS Sentinel Shield — Government Security Scan</title>
@@ -219,7 +219,7 @@
   </footer>
   <script>
     (function() {
-      var SCAN_API = 'https://agent-code-risk-mcp-production-b97d.up.railway.app/scan';
+      var SCAN_API = 'https://agent-code-risk-mcp-production.up.railway.app/scan';
       var GOV_API_KEY = 'uganda-gov-pilot-2026';
       var DAILY_LIMIT = 50;
 

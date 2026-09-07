@@ -6,14 +6,14 @@ const crypto = require('crypto');
 
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 
-const BRIDGE_URL = process.env.TEOS_BRIDGE_URL || 'https://agent-code-risk-mcp-production-b97d.up.railway.app';
+const BRIDGE_URL = process.env.TEOS_BRIDGE_URL || 'https://agent-code-risk-mcp-production.up.railway.app';
 
 const SERVICES = {
   bridge:     { url: BRIDGE_URL,                                                      name: 'TEOS Bridge',     desc: 'via Risk Engine (MCP)' },
-  bot:        { url: 'https://teoslinker-bot-production.up.railway.app',               name: 'TEOS Bot' },
-  risk:       { url: 'https://agent-code-risk-mcp-production-b97d.up.railway.app',     name: 'Risk Engine' },
-  activation: { url: 'https://activation-service-production-4228.up.railway.app',      name: 'Identity',        desc: 'via Activation Service' },
-  shield:     { url: 'https://teos-sentinel-shield-production-ef7a.up.railway.app',    name: 'Sentinel Shield' },
+  bot:        { url: 'https://teoslinker-bot-production-ca27.up.railway.app',               name: 'TEOS Bot' },
+  risk:       { url: 'https://agent-code-risk-mcp-production.up.railway.app',     name: 'Risk Engine' },
+  activation: { url: 'https://activation-service-production-a368.up.railway.app',      name: 'Identity',        desc: 'via Activation Service' },
+  shield:     { url: 'https://teos-sentinel-shield-production-7f0d.up.railway.app',    name: 'Sentinel Shield' },
 };
 
 const POLL_INTERVAL = 30000;

@@ -6,21 +6,21 @@ version: "1.0"
 monitors:
   # ── PUBLIC (Railway production URLs) ───────────────────────
   - friendly_name: TEOS Risk Engine (MCP)
-    url: https://agent-code-risk-mcp-production-b97d.up.railway.app/live
+    url: https://agent-code-risk-mcp-production.up.railway.app/live
     type: https
     interval: 60
     timeout: 30
     alert_contacts: [ "${TEOS_ALERT_CONTACT}" ]
 
   - friendly_name: TEOS Activation Service
-    url: https://activation-service-production-4228.up.railway.app/live
+    url: https://activation-service-production-a368.up.railway.app/live
     type: https
     interval: 60
     timeout: 30
     alert_contacts: [ "${TEOS_ALERT_CONTACT}" ]
 
   - friendly_name: TEOS Telegram Bot
-    url: https://teoslinker-bot-production.up.railway.app/health
+    url: https://teoslinker-bot-production-ca27.up.railway.app/health
     type: https
     interval: 60
     timeout: 30

@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['health'])) {
         exit;
     }
     $urls = [
-        'risk' => 'https://agent-code-risk-mcp-production-b97d.up.railway.app/health',
-        'bot' => 'https://teoslinker-bot-production.up.railway.app/health',
-        'shield' => 'https://teos-sentinel-shield-production-ef7a.up.railway.app/health',
+        'risk' => 'https://agent-code-risk-mcp-production.up.railway.app/health',
+        'bot' => 'https://teoslinker-bot-production-ca27.up.railway.app/health',
+        'shield' => 'https://teos-sentinel-shield-production-7f0d.up.railway.app/health',
     ];
     $ch = curl_init($urls[$target]);
     curl_setopt_array($ch, [
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$url = 'https://agent-code-risk-mcp-production-b97d.up.railway.app/scan';
+$url = 'https://agent-code-risk-mcp-production.up.railway.app/scan';
 $payload = file_get_contents('php://input');
 
 $ch = curl_init($url);
